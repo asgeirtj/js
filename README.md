@@ -1,1 +1,1 @@
-# js
+# My JS TypingMind extension
