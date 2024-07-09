@@ -1,15 +1,22 @@
 document.addEventListener('keydown', function(event) {
-  // Check if it's cmd+K (Mac only)
-  if (event.metaKey && event.key === 'k') {
-    // Prevent the default action
-    event.preventDefault();
+  // Check if the Cmd key is pressed (Mac only)
+  if (event.metaKey) {
+    // For cmd+K
+    if (event.key === 'k') {
+      event.preventDefault();
+      const newChatButton = document.querySelector('[data-element-id="new-chat-button"]');
+      if (newChatButton) {
+        newChatButton.click();
+      }
+    }
     
-    // Find the element with the specified data attribute
-    const newChatButton = document.querySelector('[data-element-id="new-chat-button"]');
-    
-    // If the element exists, click it
-    if (newChatButton) {
-      newChatButton.click();
+    // For cmd+3
+    if (event.key === '3') {
+      event.preventDefault();
+      const voiceInputButton = document.querySelector('[data-element-id="voice-input-button"]');
+      if (voiceInputButton) {
+        voiceInputButton.click();
+      }
     }
   }
 });
