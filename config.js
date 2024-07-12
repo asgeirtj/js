@@ -18,5 +18,14 @@ document.addEventListener('keydown', function(event) {
         voiceInputButton.click();
       }
     }
+
+    // For cmd + comma (,)
+    if (event.key === ',') {
+      event.preventDefault();
+      const headlessUiMenuItem = document.querySelector('[class*="headlessui-menu-item-"]:first-child');
+      if (headlessUiMenuItem) {
+        headlessUiMenuItem.click();
+      }
+    }
   }
 });
