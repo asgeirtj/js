@@ -1,112 +1,136 @@
 document.addEventListener('keydown', function(event) {
   if (event.metaKey) {
+    // New Chat Button
     if (event.key === 'k') {
       event.preventDefault();
-      clickElementById("new-chat-button-in-side-bar");
+      clickElementBySelector(`button[data-element-id="new-chat-button-in-side-bar"].jsx-2562846439`);
     }
-    
+
+    // Voice Input Button
     if (event.key === '3') {
       event.preventDefault();
-      clickElementById("voice-input-button");
+      clickElementBySelector(`button[data-element-id="voice-input-button"].rounded-md.py-1.px-1.flex.items-center.justify-center.transition-all.space-x-2.shrink-0.text-gray-500.hover\\:text-gray-900.dark\\:hover\\:text-white`);
     }
 
+    // Settings Button and Preferences
     if (event.key === ',') {
       event.preventDefault();
-      
-      const settingsButton = document.querySelector('[data-element-id="settings-button"]');
-      if (settingsButton) {
-        settingsButton.click();
-        
-        const observer = new MutationObserver((mutations, obs) => {
-          const preferencesOption = Array.from(document.querySelectorAll('button'))
-            .find(el => el.textContent.trim() === 'Preferences');
-          
-          if (preferencesOption) {
-            preferencesOption.click();
-            obs.disconnect(); // Stop observing
-          }
-        });
-        
-        observer.observe(document.body, {
-          childList: true,
-          subtree: true
-        });
-
-        setTimeout(() => observer.disconnect(), 1000);
-      }
+      clickSettingsAndPreferences(`button[data-element-id='settings-button'].cursor-default.bg-white\\/20`, "Preferences");
     }
 
+    // Model Settings Menu Button and Menu Item
     if (event.key === '.') {
       event.preventDefault();
-      
-      const modelSettingsMenuButton = document.querySelector('[data-element-id="current-chat-title"] button[aria-haspopup="menu"]');
-      if (modelSettingsMenuButton) {
-        modelSettingsMenuButton.click();
-        
-        const observer = new MutationObserver((mutations, obs) => {
-          const modelSettingsOption = Array.from(document.querySelectorAll('div[role="menuitem"]'))
-            .find(el => el.textContent.trim() === 'Model Settings (Current Chat)');
-          
-          if (modelSettingsOption) {
-            modelSettingsOption.click();
-            obs.disconnect(); // Stop observing
-          }
-        });
-
-        observer.observe(document.body, {
-          childList: true,
-          subtree: true
-        });
-
-        setTimeout(() => observer.disconnect(), 1000);
-      } else {
-        console.log('Model settings menu button not found');
-      }
+      clickModelSettings(`button#headlessui-menu-button-:rk8:.inline-flex.items-center.justify-center.gap-2.p-2.rounded-md.hover\\:bg-black\\/5.active\\:bg-black\\/10`, "Model Settings (Current Chat)");
     }
 
+    // Regenerate Button
     if (event.key === 'R' && event.shiftKey) {
       event.preventDefault();
-      clickElementById("regenerate-button");
+      clickElementBySelector(`button[data-element-id="regenerate-button"].inline-flex.items-center.justify-center.rounded-md.px-3.py-2.shadow-md.transition-all.group.font-semibold.text-xs.hover\\:scale-105.border.border-transparent.text-white.bg-blue-600.hover\\:bg-blue-500.active\\:bg-blue-600.dark\\:bg-blue-900.dark\\:hover\\:bg-blue-800`);
     }
   }
 });
 
-function clickElementById(id) {
-  const element = document.querySelector(`[data-element-id="${id}"]`);
+function clickElementBySelector(selector) {
+  const element = document.querySelector(selector);
   if (element) {
     element.click();
   } else {
-    console.log(`Element with id ${id} not found`);
+    console.log(`Element with selector ${selector} not found`);
   }
 }
 
-function increaseSubmenuHeight(submenu) {
+function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
+  const settingsButton = document.querySelector(settingsButtonSelector);
+  if (settingsButton) {
+    settingsButton.click();
+
+    const observer = new MutationObserver((mutations, obs) => {
+      const preferencesOption = Array.from(document.querySelectorAll('button'))
+        .find(el => el.textContent.trim() === preferencesText);
+      
+      if (preferencesOption) {
+        preferencesOption.click();
+        obs.disconnect(); // Stop observing
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    setTimeout(() => observer.disconnect(), 1000);
+  }
+}
+
+function clickModelSettings(menuButtonSelector, modelSettingsText) {
+  const modelSettingsMenuButton = document.querySelector(menuButtonSelector);
+  if (modelSettingsMenuButton) {
+    modelSettingsMenuButton.click();
+
+    const observer = new MutationObserver((mutations, obs) => {
+      const modelSettingsOption = Array.from(document.querySelectorAll('span.truncate'))
+        .find(el => el.textContent.trim() === modelSettingsText);
+      
+      if (modelSettingsOption) {
+        modelSettingsOption.click();
+
+        // Adjusting the submenu height
+        increaseSubmenuHeight('[role="menu"][data-headlessui-state="open"]'); 
+
+        obs.disconnect(); // Stop observing
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    setTimeout(() => observer.disconnect(), 1000);
+  }
+}
+
+function increaseSubmenuHeight(selector) {
+  const submenu = document.querySelector(selector);
   if (submenu) {
-    submenu.style.maxHeight = '80vh';
+    submenu.style.maxHeight = '90vh';
     submenu.style.overflowY = 'auto';
+  } else {
+    console.log(`Submenu with selector ${selector} not found`);
+  }
+}
+
+function adjustSpecificElementHeight() {
+  const specificElement = document.querySelector('div.py-2.max-h-\\[500px\\].overflow-auto[role="none"]');
+  if (specificElement) {
+    specificElement.style.maxHeight = '700px';
+  } else {
+    console.log('Specific element for height adjustment not found');
   }
 }
 
 function setTextareaRows() {
-  const textarea = document.querySelector('[data-element-id="ai-characters-system-instruction-input"]');
+  const textarea = document.querySelector('[data-element-id="ai-characters-system-instruction-input"]'); // Update with actual data-element-id
   if (textarea) {
     textarea.setAttribute('rows', '30');
   }
 }
 
 setTextareaRows();
+adjustSpecificElementHeight(); // Ensure the height adjustment is applied
 
 const observer = new MutationObserver((mutations) => {
   for (let mutation of mutations) {
     if (mutation.type === 'childList') {
       setTextareaRows();
+      adjustSpecificElementHeight(); // Ensure the height adjustment is applied dynamically
       const addedNodes = mutation.addedNodes;
       for (let node of addedNodes) {
         if (node.nodeType === Node.ELEMENT_NODE) {
-          const submenu = node.querySelector('[role="menu"][data-headlessui-state="open"]');
-          if (submenu) {
-            increaseSubmenuHeight(submenu);
-          }
+          increaseSubmenuHeight('[role="menu"][data-headlessui-state="open"]');
         }
       }
     }
@@ -118,4 +142,4 @@ observer.observe(document.body, {
   subtree: true
 });
 
-console.log('Updated script loaded with all functionalities including correct cmd+, and cmd+. shortcuts');
+console.log('Updated script loaded with all functionalities including correctly adjusting submenu and specific element heights.');
