@@ -77,6 +77,17 @@ function setTextareaRows() {
   }
 }
 
+function toggleVoiceInput() {
+  const finishButton = Array.from(document.querySelectorAll('button'))
+    .find(button => button.textContent.includes('Finish'));
+  
+  if (finishButton) {
+    finishButton.click();
+  } else {
+    clickElementBySelector(`button[data-element-id="voice-input-button"].rounded-md.py-1.px-1.flex.items-center.justify-center.transition-all.space-x-2.shrink-0.text-gray-500.hover\\:text-gray-900.dark\\:hover\\:text-white`);
+  }
+}
+
 const menuObserver = new MutationObserver(adjustModelMenu);
 menuObserver.observe(document.body, { childList: true, subtree: true });
 
@@ -87,7 +98,12 @@ document.addEventListener('keydown', function(event) {
       event.preventDefault();
       clickElementBySelector(`button[data-element-id="new-chat-button-in-side-bar"].jsx-2562846439`);
     }
-    // Voice Input Button
+    // Toggle Voice Input
+    if (event.key === '1') {
+      event.preventDefault();
+      toggleVoiceInput();
+    }
+    // Voice Input Button (kept for backward compatibility)
     if (event.key === '3') {
       event.preventDefault();
       clickElementBySelector(`button[data-element-id="voice-input-button"].rounded-md.py-1.px-1.flex.items-center.justify-center.transition-all.space-x-2.shrink-0.text-gray-500.hover\\:text-gray-900.dark\\:hover\\:text-white`);
@@ -123,4 +139,4 @@ textareaObserver.observe(document.body, {
   subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment and keyboard shortcuts.');
+console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, and voice input toggle.');
