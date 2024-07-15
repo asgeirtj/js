@@ -84,7 +84,12 @@ function toggleVoiceInput() {
   if (finishButton) {
     finishButton.click();
   } else {
-    clickElementBySelector(`button[data-element-id="voice-input-button"].rounded-md.py-1.px-1.flex.items-center.justify-center.transition-all.space-x-2.shrink-0.text-gray-500.hover\\:text-gray-900.dark\\:hover\\:text-white`);
+    const voiceButton = document.querySelector('button[data-element-id="voice-input-button"]');
+    if (voiceButton) {
+      voiceButton.click();
+    } else {
+      console.log("Voice input button not found");
+    }
   }
 }
 
@@ -99,14 +104,9 @@ document.addEventListener('keydown', function(event) {
       clickElementBySelector(`button[data-element-id="new-chat-button-in-side-bar"].jsx-2562846439`);
     }
     // Toggle Voice Input
-    if (event.key === '1') {
+    if (event.key === '1' || event.key === '3') {
       event.preventDefault();
       toggleVoiceInput();
-    }
-    // Voice Input Button (kept for backward compatibility)
-    if (event.key === '3') {
-      event.preventDefault();
-      clickElementBySelector(`button[data-element-id="voice-input-button"].rounded-md.py-1.px-1.flex.items-center.justify-center.transition-all.space-x-2.shrink-0.text-gray-500.hover\\:text-gray-900.dark\\:hover\\:text-white`);
     }
     // Settings Button and Preferences
     if (event.key === ',') {
