@@ -78,8 +78,7 @@ function setTextareaRows() {
 }
 
 function toggleVoiceInput() {
-  const finishButton = Array.from(document.querySelectorAll('button'))
-    .find(button => button.textContent.includes('Finish'));
+  const finishButton = document.querySelector('button:has(span:contains("Finish"))');
   
   if (finishButton) {
     finishButton.click();
@@ -92,6 +91,7 @@ function toggleVoiceInput() {
     }
   }
 }
+
 
 const menuObserver = new MutationObserver(adjustModelMenu);
 menuObserver.observe(document.body, { childList: true, subtree: true });
