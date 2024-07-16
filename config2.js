@@ -101,20 +101,16 @@ menuObserver.observe(document.body, { childList: true, subtree: true });
 
 document.addEventListener('keydown', function(event) {
   if (event.metaKey) {
-    // New Chat Button with Cmd + Option + N
-    if (event.key === 'n' && event.altKey) {
-      event.preventDefault();
-      clickElementBySelector(`button[data-element-id="new-chat-button-in-side-bar"].jsx-2562846439`);
-    }
-    // New Chat Button with Cmd + K as an alias to Cmd + Option + N
+    // New Chat Button
     if (event.key === 'k') {
       event.preventDefault();
+      // Trigger the Cmd + Option + N programmatically
       const newEvent = new KeyboardEvent('keydown', {
         key: 'n',
-        metaKey: true,
+        code: 'KeyN',
         altKey: true,
-        bubbles: true,
-        cancelable: true
+        metaKey: true,
+        bubbles: true
       });
       document.dispatchEvent(newEvent);
     }
@@ -143,11 +139,11 @@ document.addEventListener('keydown', function(event) {
       event.preventDefault();
       clickElementBySelector(`button[data-element-id="in-message-play-button"]`);
     }
-    // Stop Button
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      clickStopButton();
-    }
+  }
+  // Stop Button
+  if (event.key === 'F2') {
+    event.preventDefault();
+    clickStopButton();
   }
 });
 
@@ -164,4 +160,4 @@ textareaObserver.observe(document.body, {
   subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, toggle voice input (Cmd+1), and stop button (Cmd+Esc).');
+console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, toggle voice input (Cmd+1), and stop button (F2).');
