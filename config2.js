@@ -87,15 +87,36 @@ function toggleVoiceInput() {
   }
 }
 
+function clickStopButton() {
+  const stopButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === "Stop");
+  if (stopButton) {
+    stopButton.click();
+  } else {
+    console.log("Stop button not found");
+  }
+}
+
 const menuObserver = new MutationObserver(adjustModelMenu);
 menuObserver.observe(document.body, { childList: true, subtree: true });
 
 document.addEventListener('keydown', function(event) {
   if (event.metaKey) {
-    // New Chat Button
-    if (event.key === 'k') {
+    // New Chat Button with Cmd + Option + N
+    if (event.key === 'n' && event.altKey) {
       event.preventDefault();
       clickElementBySelector(`button[data-element-id="new-chat-button-in-side-bar"].jsx-2562846439`);
+    }
+    // New Chat Button with Cmd + K as an alias to Cmd + Option + N
+    if (event.key === 'k') {
+      event.preventDefault();
+      const newEvent = new KeyboardEvent('keydown', {
+        key: 'n',
+        metaKey: true,
+        altKey: true,
+        bubbles: true,
+        cancelable: true
+      });
+      document.dispatchEvent(newEvent);
     }
     // Toggle Voice Input
     if (event.key === '1') {
@@ -117,6 +138,16 @@ document.addEventListener('keydown', function(event) {
       event.preventDefault();
       clickElementBySelector(`button[data-element-id="regenerate-button"].inline-flex.items-center.justify-center.rounded-md.px-3.py-2.shadow-md.transition-all.group.font-semibold.text-xs.hover\\:scale-105.border.border-transparent.text-white.bg-blue-600.hover\\:bg-blue-500.active\\:bg-blue-600.dark\\:bg-blue-900.dark\\:hover\\:bg-blue-800`);
     }
+    // In-message Play Button
+    if (event.key === 'l') {
+      event.preventDefault();
+      clickElementBySelector(`button[data-element-id="in-message-play-button"]`);
+    }
+    // Stop Button
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      clickStopButton();
+    }
   }
 });
 
@@ -133,4 +164,4 @@ textareaObserver.observe(document.body, {
   subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, and toggle voice input (Cmd+1).');
+console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, toggle voice input (Cmd+1), and stop button (Cmd+Esc).');
