@@ -1,3 +1,87 @@
+function waitForElement(selector) {
+  return new Promise(resolve => {
+    if (document.querySelector(selector)) {
+      return resolve(document.querySelector(selector));
+    }
+
+    const observer = new MutationObserver(mutations => {
+      if (document.querySelector(selector)) {
+        resolve(document.querySelector(selector));
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  });
+}
+
+async function clickButtonByDataId(dataId) {
+  const button = await waitForElement(`[data-element-id="${dataId}"]`);
+  if (button) {
+    button.click();
+    console.log(`Clicked button: ${dataId}`);
+    return true;
+  }
+  console.log(`Button not found: ${dataId}`);
+  return false;
+}
+
+async function selectOption(optionText) {
+  await waitForElement('[role="option"]');
+  const options = Array.from(document.querySelectorAll('[role="option"]'));
+  const option = options.find(opt => opt.textContent.includes(optionText));
+  if (option) {
+    option.click();
+    console.log(`Selected option: ${optionText}`);
+    return true;
+  }
+  console.log(`Option not found: ${optionText}`);
+  return false;
+}
+
+async function clickButtonByText(text) {
+  await waitForElement('button');
+  const buttons = Array.from(document.querySelectorAll('button'));
+  const button = buttons.find(b => b.textContent.trim() === text);
+  if (button) {
+    button.click();
+    console.log(`Clicked button: ${text}`);
+    return true;
+  }
+  console.log(`Button not found: ${text}`);
+  return false;
+}
+
+async function openAIAgentsEditNova(agentName) {
+  if (await clickButtonByDataId('search-shortcut-button')) {
+    if (await selectOption('Open AI Agents')) {
+      await clickButtonByText('Open Model Settings');
+
+      await waitForElement('[data-element-id="one-ai-character-block"]');
+      const blocks = document.querySelectorAll('[data-element-id="one-ai-character-block"]');
+      const targetBlock = Array.from(blocks).find(block => block.textContent.includes(agentName));
+      
+      if (!targetBlock) {
+        console.log(`Block not found for ${agentName}`);
+        return;
+      }
+
+      const editButton = Array.from(targetBlock.querySelectorAll('button'))
+        .find(btn => btn.textContent.trim() === 'Edit');
+
+      if (editButton) {
+        editButton.click();
+        console.log(`Edit button clicked for ${agentName}`);
+      } else {
+        console.log(`Edit button not found for ${agentName}`);
+      }
+    }
+  }
+}
+
 function adjustModelMenu() {
   const modelMenu = document.querySelector('div[role="menu"] .py-2.max-h-\\[300px\\].overflow-auto');
   if (modelMenu) {
@@ -139,6 +223,11 @@ document.addEventListener('keydown', function(event) {
       event.preventDefault();
       clickElementBySelector(`button[data-element-id="in-message-play-button"]`);
     }
+    // Open AI Agents Edit Nova
+    if (event.key === 'e') {
+      event.preventDefault();
+      openAIAgentsEditNova("Nova Sonnet 3.5 8192 tokens 16 Jul 2024");
+    }
   }
   // Stop Button
   if (event.key === 'F2') {
@@ -160,4 +249,4 @@ textareaObserver.observe(document.body, {
   subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, toggle voice input (Cmd+1), and stop button (F2).');
+console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, toggle voice input (Cmd+1), stop button (F2), and open AI Agents Edit Nova (Cmd+E).');
