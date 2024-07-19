@@ -202,7 +202,7 @@ document.addEventListener('keydown', function(event) {
   // Open AI Agents Edit Nova
   if (event.key === 'F3') {
     event.preventDefault();
-    openAIAgentsEditNova("Nova Sonnet 3.5 8192 tokens 16 Jul 2024");
+    openAIAgentsEditNova("Nova");
   }
 });
 
