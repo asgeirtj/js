@@ -163,15 +163,7 @@ document.addEventListener('keydown', function(event) {
     // New Chat Button
     if (event.key === 'k') {
       event.preventDefault();
-      // Trigger the Cmd + Option + N programmatically
-      const newEvent = new KeyboardEvent('keydown', {
-        key: 'n',
-        code: 'KeyN',
-        altKey: true,
-        metaKey: true,
-        bubbles: true
-      });
-      document.dispatchEvent(newEvent);
+      clickElementBySelector('button[data-element-id="new-chat-button-in-side-bar"]');
     }
     // Toggle Voice Input
     if (event.key === '1') {
@@ -219,4 +211,4 @@ textareaObserver.observe(document.body, {
   subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, toggle voice input (Cmd+1), stop button (F2), open AI Agents Edit Nova (F3), and click latest play button (Cmd+L).');
+console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, new chat button (Cmd+K), toggle voice input (Cmd+1), stop button (F2), open AI Agents Edit Nova (F3), and click latest play button (Cmd+L).');
