@@ -89,41 +89,6 @@ function adjustModelMenu() {
   }
 }
 
-function clickModelSettings() {
-  const modelDropdownButton = document.querySelector('button[id^="headlessui-menu-button-"]');
-  if (modelDropdownButton) {
-    modelDropdownButton.click();
-    
-    setTimeout(() => {
-      const modelSettingsButton = document.querySelector('button:has(span:contains("Model Settings (Current Chat)"))');
-      
-      if (modelSettingsButton) {
-        modelSettingsButton.click();
-      } else {
-        const manageModelsButton = document.querySelector('button:contains("Manage Models")');
-        if (manageModelsButton) {
-          manageModelsButton.click();
-        } else {
-          console.log("Manage Models button not found");
-        }
-      }
-      
-      const observer = new MutationObserver((mutations) => {
-        for (let mutation of mutations) {
-          if (mutation.type === 'childList') {
-            adjustModelMenu();
-            observer.disconnect();
-          }
-        }
-      });
-      
-      observer.observe(document.body, { childList: true, subtree: true });
-    }, 100);
-  } else {
-    console.log("Model dropdown button not found");
-  }
-}
-
 function clickElementBySelector(selector) {
   const element = document.querySelector(selector);
   if (element) {
@@ -180,6 +145,16 @@ function clickStopButton() {
   }
 }
 
+function clickLatestPlayButton() {
+  const playButtons = document.querySelectorAll(`button[data-element-id="in-message-play-button"]`);
+  if (playButtons.length > 0) {
+    playButtons[playButtons.length - 1].click();
+    console.log("Clicked the latest play button");
+  } else {
+    console.log("No play buttons found");
+  }
+}
+
 const menuObserver = new MutationObserver(adjustModelMenu);
 menuObserver.observe(document.body, { childList: true, subtree: true });
 
@@ -208,31 +183,26 @@ document.addEventListener('keydown', function(event) {
       event.preventDefault();
       clickSettingsAndPreferences(`button[data-element-id='settings-button'].cursor-default.bg-white\\/20`, "Preferences");
     }
-    // Model Settings Menu Button and Menu Item
-    if (event.key === '.') {
-      event.preventDefault();
-      clickModelSettings();
-    }
     // Regenerate Button
     if (event.key === 'R' && event.shiftKey) {
       event.preventDefault();
       clickElementBySelector(`button[data-element-id="regenerate-button"].inline-flex.items-center.justify-center.rounded-md.px-3.py-2.shadow-md.transition-all.group.font-semibold.text-xs.hover\\:scale-105.border.border-transparent.text-white.bg-blue-600.hover\\:bg-blue-500.active\\:bg-blue-600.dark\\:bg-blue-900.dark\\:hover\\:bg-blue-800`);
     }
-    // In-message Play Button
+    // Latest Play Button
     if (event.key === 'l') {
       event.preventDefault();
-      clickElementBySelector(`button[data-element-id="in-message-play-button"]`);
-    }
-    // Open AI Agents Edit Nova
-    if (event.key === 'e') {
-      event.preventDefault();
-      openAIAgentsEditNova("Nova Sonnet 3.5 8192 tokens 16 Jul 2024");
+      clickLatestPlayButton();
     }
   }
   // Stop Button
   if (event.key === 'F2') {
     event.preventDefault();
     clickStopButton();
+  }
+  // Open AI Agents Edit Nova
+  if (event.key === 'F3') {
+    event.preventDefault();
+    openAIAgentsEditNova("Nova Sonnet 3.5 8192 tokens 16 Jul 2024");
   }
 });
 
@@ -249,4 +219,4 @@ textareaObserver.observe(document.body, {
   subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, toggle voice input (Cmd+1), stop button (F2), and open AI Agents Edit Nova (Cmd+E).');
+console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, toggle voice input (Cmd+1), stop button (F2), open AI Agents Edit Nova (F3), and click latest play button (Cmd+L).');
