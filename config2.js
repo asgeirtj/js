@@ -185,6 +185,16 @@ document.addEventListener('keydown', function(event) {
       event.preventDefault();
       clickLatestPlayButton();
     }
+    // Open AI Agents Edit Nova
+    if (event.key === 'e') {
+      event.preventDefault();
+      openAIAgentsEditNova("Nova");
+    }
+    // Open AI Agents Edit Nova huge instructions
+    if (event.key === '2') {
+      event.preventDefault();
+      openAIAgentsEditNova("Nova huge instructions");
+    }
   }
   // Stop Button
   if (event.key === 'F2') {
@@ -211,4 +221,4 @@ textareaObserver.observe(document.body, {
   subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, new chat button (Cmd+K), toggle voice input (Cmd+1), stop button (F2), open AI Agents Edit Nova (F3), and click latest play button (Cmd+L).');
+console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, new chat button (Cmd+K), toggle voice input (Cmd+1), stop button (F2), open AI Agents Edit Nova (Cmd+E), open AI Agents Edit Nova huge instructions (Cmd+2), and click latest play button (Cmd+L).');
