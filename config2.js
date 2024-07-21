@@ -72,7 +72,14 @@ async function openAIAgentsEditNova(agentName) {
         console.log(`Block ${index + 1} text content: "${block.textContent.trim()}"`);
       });
       
-      const targetBlock = Array.from(blocks).find(block => block.textContent.includes(agentName));
+      const targetBlock = Array.from(blocks).find(block => {
+        const blockText = block.textContent.trim();
+        if (agentName === "Nova") {
+          // Match "Nova" exactly, avoiding "JconNova" and other variations
+          return /^Nova(\s|$)/.test(blockText);
+        }
+        return blockText.startsWith(agentName);
+      });
       
       if (!targetBlock) {
         console.log(`Block not found for ${agentName}`);
