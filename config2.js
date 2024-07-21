@@ -74,41 +74,52 @@ function getCurrentAgentName() {
   return null;
 }
 
-async function openAIAgentsEdit(agentName) {
+async function openAIAgentsEdit(agentName, maxRetries = 3) {
   const startTime = performance.now();
-  console.log(`Attempting to open AI agent: ${agentName}`);
-  if (await clickButtonByDataId('search-shortcut-button')) {
-    console.log('Clicked search shortcut button');
-    if (await selectOption('Open AI Agents')) {
-      console.log('Selected Open AI Agents option');
-      await clickButtonByText('Open Model Settings');
-      console.log('Clicked Open Model Settings');
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    console.log(`Attempt ${attempt} to open AI agent: ${agentName}`);
+    
+    if (await clickButtonByDataId('search-shortcut-button')) {
+      console.log('Clicked search shortcut button');
+      if (await selectOption('Open AI Agents')) {
+        console.log('Selected Open AI Agents option');
+        await clickButtonByText('Open Model Settings');
+        console.log('Clicked Open Model Settings');
 
-      // Add a delay here
-      await new Promise(resolve => setTimeout(resolve, 500)); // 1 second delay
+        // Add a delay here
+        await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
 
-      await waitForElement('[data-element-id="one-ai-character-block"]');
-      const blocks = document.querySelectorAll('[data-element-id="one-ai-character-block"]');
-      console.log(`Found ${blocks.length} AI character blocks`);
-      
-      const targetBlock = Array.from(blocks).find(block => {
-        const nameElement = block.querySelector('div[class*="text-sm font-medium"]');
-        return nameElement && nameElement.textContent.trim() === agentName;
-      });
-      
-      if (!targetBlock) {
-        showNotification(`Block not found for ${agentName}. Try again?`);
-        return;
-      }
+        await waitForElement('[data-element-id="one-ai-character-block"]');
+        const blocks = document.querySelectorAll('[data-element-id="one-ai-character-block"]');
+        console.log(`Found ${blocks.length} AI character blocks`);
+        
+        const targetBlock = Array.from(blocks).find(block => {
+          const nameElement = block.querySelector('div[class*="text-sm font-medium"]');
+          return nameElement && nameElement.textContent.trim() === agentName;
+        });
+        
+        if (targetBlock) {
+          console.log(`Found target block for ${agentName}`);
+          const editButton = targetBlock.querySelector('button:has-text("Edit")');
 
-      console.log(`Found target block for ${agentName}`);
-      const editButton = targetBlock.querySelector('button:has-text("Edit")');
-
-      if (editButton) {
-        editButton.click();
-        console.log(`Edit button clicked for ${agentName}`);
-      } else {
-        showNotification(`Edit button not found for ${agentName}. UI might have changed.`);
+          if (editButton) {
+            editButton.click();
+            console.log(`Edit button clicked for ${agentName}`);
+            const endTime = performance.now();
+            console.log(`Operation took ${endTime - startTime} milliseconds`);
+            return; // Success! Exit the function.
+          } else {
+            showNotification(`Edit button not found for ${agentName}. UI might have changed.`);
+          }
+        } else {
+          console.log(`Block not found for ${agentName} on attempt ${attempt}`);
+          if (attempt < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait before retrying
+          } else {
+            showNotification(`Failed to find ${agentName} after ${maxRetries} attempts. UI might have changed.`);
+          }
+        }
       }
     }
   }
@@ -116,6 +127,7 @@ async function openAIAgentsEdit(agentName) {
   const endTime = performance.now();
   console.log(`Operation took ${endTime - startTime} milliseconds`);
 }
+
 
 
 async function openCurrentAgentEdit() {
