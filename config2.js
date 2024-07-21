@@ -67,18 +67,14 @@ async function openAIAgentsEditNova(agentName) {
       await waitForElement('[data-element-id="one-ai-character-block"]');
       const blocks = document.querySelectorAll('[data-element-id="one-ai-character-block"]');
       console.log(`Found ${blocks.length} AI character blocks`);
-      
+
       blocks.forEach((block, index) => {
         console.log(`Block ${index + 1} text content: "${block.textContent.trim()}"`);
       });
-      
+
       const targetBlock = Array.from(blocks).find(block => {
         const blockText = block.textContent.trim();
-        if (agentName === "Nova") {
-          // Match "Nova" exactly, avoiding "JconNova" and other variations
-          return /^Nova(\s|$)/.test(blockText);
-        }
-        return blockText.startsWith(agentName);
+        return blockText.startsWith(agentName);  // Match beginning of block text
       });
       
       if (!targetBlock) {
@@ -87,8 +83,9 @@ async function openAIAgentsEditNova(agentName) {
       }
 
       console.log(`Found target block for ${agentName}: "${targetBlock.textContent.trim()}"`);
-      const editButton = Array.from(targetBlock.querySelectorAll('button'))
-        .find(btn => btn.textContent.trim() === 'Edit');
+      const editButton = Array.from(targetBlock.querySelectorAll('button')).find(btn => 
+btn.textContent.trim().toLowerCase() === 'edit'
+);
 
       if (editButton) {
         editButton.click();
@@ -149,7 +146,6 @@ function setTextareaRows() {
     }
   });
 }
-
 
 function toggleVoiceInput() {
   const finishButton = Array.from(document.querySelectorAll('button'))
