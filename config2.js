@@ -56,12 +56,22 @@ async function clickButtonByText(text) {
 }
 
 async function openAIAgentsEditNova(agentName) {
+  console.log(`Attempting to open AI agent: ${agentName}`);
   if (await clickButtonByDataId('search-shortcut-button')) {
+    console.log('Clicked search shortcut button');
     if (await selectOption('Open AI Agents')) {
+      console.log('Selected Open AI Agents option');
       await clickButtonByText('Open Model Settings');
+      console.log('Clicked Open Model Settings');
 
       await waitForElement('[data-element-id="one-ai-character-block"]');
       const blocks = document.querySelectorAll('[data-element-id="one-ai-character-block"]');
+      console.log(`Found ${blocks.length} AI character blocks`);
+      
+      blocks.forEach((block, index) => {
+        console.log(`Block ${index + 1} text content: "${block.textContent.trim()}"`);
+      });
+      
       const targetBlock = Array.from(blocks).find(block => block.textContent.includes(agentName));
       
       if (!targetBlock) {
@@ -69,6 +79,7 @@ async function openAIAgentsEditNova(agentName) {
         return;
       }
 
+      console.log(`Found target block for ${agentName}: "${targetBlock.textContent.trim()}"`);
       const editButton = Array.from(targetBlock.querySelectorAll('button'))
         .find(btn => btn.textContent.trim() === 'Edit');
 
@@ -155,6 +166,10 @@ function clickLatestPlayButton() {
   }
 }
 
+function clickModelsButton() {
+  clickSettingsAndPreferences(`button[data-element-id='settings-button'].cursor-default.bg-white\\/20`, "Models");
+}
+
 const menuObserver = new MutationObserver(adjustModelMenu);
 menuObserver.observe(document.body, { childList: true, subtree: true });
 
@@ -188,23 +203,25 @@ document.addEventListener('keydown', function(event) {
     // Open AI Agents Edit Nova
     if (event.key === 'e') {
       event.preventDefault();
+      console.log('Cmd+E pressed, opening Nova');
       openAIAgentsEditNova("Nova");
     }
     // Open AI Agents Edit Nova huge instructions
     if (event.key === '2') {
       event.preventDefault();
+      console.log('Cmd+2 pressed, opening Nova huge instructions');
       openAIAgentsEditNova("Nova huge instructions");
+    }
+    // Models Button
+    if (event.key === 'j') {
+      event.preventDefault();
+      clickModelsButton();
     }
   }
   // Stop Button
   if (event.key === 'F2') {
     event.preventDefault();
     clickStopButton();
-  }
-  // Open AI Agents Edit Nova
-  if (event.key === 'F3') {
-    event.preventDefault();
-    openAIAgentsEditNova("Nova");
   }
 });
 
@@ -221,4 +238,4 @@ textareaObserver.observe(document.body, {
   subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, new chat button (Cmd+K), toggle voice input (Cmd+1), stop button (F2), open AI Agents Edit Nova (Cmd+E), open AI Agents Edit Nova huge instructions (Cmd+2), and click latest play button (Cmd+L).');
+console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, new chat button (Cmd+K), toggle voice input (Cmd+1), stop button (F2), open AI Agents Edit Nova (Cmd+E), open AI Agents Edit Nova huge instructions (Cmd+2), click latest play button (Cmd+L), and click Models button (Cmd+J).');
