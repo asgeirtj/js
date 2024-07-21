@@ -84,6 +84,9 @@ async function openAIAgentsEdit(agentName) {
       await clickButtonByText('Open Model Settings');
       console.log('Clicked Open Model Settings');
 
+      // Add a delay here
+      await new Promise(resolve => setTimeout(resolve, 500)); // 1 second delay
+
       await waitForElement('[data-element-id="one-ai-character-block"]');
       const blocks = document.querySelectorAll('[data-element-id="one-ai-character-block"]');
       console.log(`Found ${blocks.length} AI character blocks`);
@@ -94,7 +97,7 @@ async function openAIAgentsEdit(agentName) {
       });
       
       if (!targetBlock) {
-        showNotification(`Block not found for ${agentName}`);
+        showNotification(`Block not found for ${agentName}. Try again?`);
         return;
       }
 
@@ -105,7 +108,7 @@ async function openAIAgentsEdit(agentName) {
         editButton.click();
         console.log(`Edit button clicked for ${agentName}`);
       } else {
-        showNotification(`Edit button not found for ${agentName}`);
+        showNotification(`Edit button not found for ${agentName}. UI might have changed.`);
       }
     }
   }
@@ -113,6 +116,7 @@ async function openAIAgentsEdit(agentName) {
   const endTime = performance.now();
   console.log(`Operation took ${endTime - startTime} milliseconds`);
 }
+
 
 async function openCurrentAgentEdit() {
   const currentAgentName = getCurrentAgentName();
