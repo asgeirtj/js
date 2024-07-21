@@ -138,11 +138,18 @@ function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
 }
 
 function setTextareaRows() {
-  const textarea = document.querySelector('[data-element-id="ai-characters-system-instruction-input"]');
-  if (textarea) {
-    textarea.setAttribute('rows', '30');
-  }
+  const textareas = [
+    document.querySelector('[data-element-id="ai-characters-system-instruction-input"]'),
+    document.querySelector('[data-element-id="new-system-instruction"]')
+  ];
+
+  textareas.forEach(textarea => {
+    if (textarea) {
+      textarea.setAttribute('rows', '30');
+    }
+  });
 }
+
 
 function toggleVoiceInput() {
   const finishButton = Array.from(document.querySelectorAll('button'))
