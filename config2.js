@@ -1,4 +1,4 @@
-// 2024-07-23
+// 2024-07-23 JS Extension for TypingMind by Owsgair
 
 function waitForElement(selector) {
   return new Promise(resolve => {
