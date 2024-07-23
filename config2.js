@@ -137,7 +137,6 @@ function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
 function setTextareaRows() {
   const textareas = [
     document.querySelector('[data-element-id="ai-characters-system-instruction-input"]'),
-    document.querySelector('[data-element-id="new-system-instruction"]')
   ];
 
   textareas.forEach(textarea => {
