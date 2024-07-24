@@ -1,4 +1,4 @@
-// 2024-07-23 JS Extension for TypingMind by Owsgair
+// 2024-07-24 JS Extension for TypingMind by Owsgair
 
 function waitForElement(selector) {
   return new Promise(resolve => {
@@ -86,8 +86,8 @@ async function openAIAgentsEditNova(agentName) {
 
       console.log(`Found target block for ${agentName}: "${targetBlock.textContent.trim()}"`);
       const editButton = Array.from(targetBlock.querySelectorAll('button')).find(btn => 
-btn.textContent.trim().toLowerCase() === 'edit'
-);
+        btn.textContent.trim().toLowerCase() === 'edit'
+      );
 
       if (editButton) {
         editButton.click();
@@ -181,6 +181,20 @@ function clickModelsButton() {
   clickSettingsAndPreferences(`button[data-element-id='settings-button'].cursor-default.bg-white\\/20`, "Models");
 }
 
+function hideSidebar() {
+  const sidebarToggleButton = document.querySelector('[data-element-id="sidebar-toggle-button"]');
+  if (sidebarToggleButton) {
+    const sidebarIsVisible = sidebarToggleButton.getAttribute('aria-expanded') === 'true';
+    if (sidebarIsVisible) {
+      sidebarToggleButton.click();
+      console.log("Sidebar hidden");
+    }
+  }
+}
+
+// Hide sidebar on page load
+window.addEventListener('load', hideSidebar);
+
 const menuObserver = new MutationObserver(adjustModelMenu);
 menuObserver.observe(document.body, { childList: true, subtree: true });
 
@@ -228,6 +242,15 @@ document.addEventListener('keydown', function(event) {
       event.preventDefault();
       clickModelsButton();
     }
+    // Toggle Sidebar (using Cmd+D)
+    if (event.key === 'd') {
+      event.preventDefault();
+      const sidebarToggleButton = document.querySelector('[data-element-id="sidebar-toggle-button"]');
+      if (sidebarToggleButton) {
+        sidebarToggleButton.click();
+        console.log("Toggled sidebar visibility");
+      }
+    }
   }
   // Stop Button
   if (event.key === 'F2') {
@@ -236,6 +259,7 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
+// Set initial textarea rows
 setTextareaRows();
 const textareaObserver = new MutationObserver((mutations) => {
   for (let mutation of mutations) {
@@ -249,4 +273,4 @@ textareaObserver.observe(document.body, {
   subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, new chat button (Cmd+K), toggle voice input (Cmd+1), stop button (F2), open AI Agents Edit Nova (Cmd+E), open AI Agents Edit Nova huge instructions (Cmd+2), click latest play button (Cmd+L), and click Models button (Cmd+J).');
+console.log('Enhanced script loaded: Sidebar will be hidden on launch. Use Cmd+D to toggle it as needed.');
