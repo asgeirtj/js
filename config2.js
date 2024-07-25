@@ -20,11 +20,11 @@ function waitForElement(selector) {
     });
 }
 
-// Function to click settings button and manage plugins option
+// Function to click the settings button and manage plugins option
 async function clickManagePluginsButton() {
     console.log('Cmd+O pressed, opening Manage Plugins');
 
-    // Using a class-based selector for dropdown button
+    // Using a class-based selector for the dropdown button
     const dropdownButtonSelector = 'button[id^="headlessui-menu-button"]'; // Adjusted selector
 
     try {
@@ -34,9 +34,9 @@ async function clickManagePluginsButton() {
             dropdownButton.click();
             console.log('Dropdown button clicked');
             
-            // Wait briefly for the dropdown menu to appear
+            // Wait for 500ms to make sure the dropdown menu has appeared
             setTimeout(async () => {
-                // The "Manage Plugins" item is within role="menuitem"
+                // The "Manage Plugins" item within the role="menuitem"
                 const managePluginsItemSelector = 'div[role="menuitem"] div.truncate';
                 
                 const menuItems = document.querySelectorAll(managePluginsItemSelector);
@@ -48,7 +48,7 @@ async function clickManagePluginsButton() {
                 } else {
                     console.log('Manage Plugins item not found');
                 }
-            }, 100); // Adjust the delay as needed
+            }, 500); // Increased the delay to 500ms
         } else {
             console.log('Dropdown button not found');
         }
