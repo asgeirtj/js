@@ -1,3 +1,6 @@
+// Typing Mind Extension Script
+// Date: 2023-10-03
+
 // Function to wait for an element to appear
 function waitForElement(selector) {
   return new Promise(resolve => {
