@@ -1,14 +1,14 @@
 // Function to wait for an element to appear
-function waitForElement(selector, timeout = 5000) {
-    return new Promise((resolve) => {
+function waitForElement(selector) {
+    return new Promise(resolve => {
         if (document.querySelector(selector)) {
             return resolve(document.querySelector(selector));
         }
 
-        const observer = new MutationObserver(() => {
+        const observer = new MutationObserver(mutations => {
             if (document.querySelector(selector)) {
-                observer.disconnect();
                 resolve(document.querySelector(selector));
+                observer.disconnect();
             }
         });
 
@@ -16,11 +16,6 @@ function waitForElement(selector, timeout = 5000) {
             childList: true,
             subtree: true
         });
-
-        setTimeout(() => {
-            observer.disconnect();
-            resolve(null);
-        }, timeout);
     });
 }
 
@@ -28,24 +23,35 @@ function waitForElement(selector, timeout = 5000) {
 async function clickManagePluginsButton() {
     console.log('Cmd+O pressed, attempting to open Manage Plugins');
 
-    try {
-        const pluginsButton = await waitForElement('button:has(svg.w-6.h-6.text-blue-500)');
-        if (!pluginsButton) throw new Error('Plugins button not found');
+    // First, find and click the plugins/settings button, identified by the distinctive puzzle piece icon
+    const pluginsButton = document.querySelector('button svg.w-6.h-6.text-blue-500').closest('button');
 
+    if (pluginsButton) {
         pluginsButton.click();
         console.log('Clicked plugins button');
 
-        const managePluginsItem = await waitForElement('div[role="menuitem"]:has(div.truncate:contains("Manage Plugins"))');
-        if (!managePluginsItem) throw new Error('Manage Plugins option not found');
+        // Wait briefly for the menu to appear
+        await new Promise(resolve => setTimeout(resolve, 100));
 
-        managePluginsItem.click();
-        console.log('Clicked Manage Plugins option');
-    } catch (error) {
-        console.error('Error in clickManagePluginsButton:', error.message);
+        // Find and click the 'Manage Plugins' option
+        const menuItems = document.querySelectorAll('div[role="menuitem"]');
+        const managePluginsItem = Array.from(menuItems).find(item => {
+            const truncateDiv = item.querySelector('div.truncate');
+            return truncateDiv && truncateDiv.textContent.trim() === 'Manage Plugins';
+        });
+
+        if (managePluginsItem) {
+            managePluginsItem.click();
+            console.log('Clicked Manage Plugins option');
+        } else {
+            console.log('Manage Plugins option not found in menu');
+        }
+    } else {
+        console.log('Plugins button not found');
     }
 }
 
-// Supporting function to click an element by selector
+// Additional supporting functions
 function clickElementBySelector(selector) {
     const element = document.querySelector(selector);
     if (element) {
@@ -57,7 +63,6 @@ function clickElementBySelector(selector) {
     }
 }
 
-// Function to toggle voice input
 function toggleVoiceInput() {
     const finishButton = Array.from(document.querySelectorAll('button'))
         .find(button => button.textContent.includes('Finish'));
@@ -68,7 +73,6 @@ function toggleVoiceInput() {
     }
 }
 
-// Function to click stop button
 function clickStopButton() {
     const stopButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === "Stop");
     if (stopButton) {
@@ -78,7 +82,6 @@ function clickStopButton() {
     }
 }
 
-// Function to click latest play button
 function clickLatestPlayButton() {
     const playButtons = document.querySelectorAll('button[data-element-id="in-message-play-button"]');
     if (playButtons.length > 0) {
@@ -169,21 +172,24 @@ textareaObserver.observe(document.body, {
 });
 
 // Supporting function to click settings and preferences
-async function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
-    try {
-        const settingsButton = await waitForElement(settingsButtonSelector);
-        if (!settingsButton) throw new Error('Settings button not found');
-
+function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
+    const settingsButton = document.querySelector(settingsButtonSelector);
+    if (settingsButton) {
         settingsButton.click();
-        console.log('Clicked settings button');
-
-        const preferencesOption = await waitForElement(`button:contains("${preferencesText}"), div[role="menuitem"]:contains("${preferencesText}")`);
-        if (!preferencesOption) throw new Error(`${preferencesText} option not found`);
-
-        preferencesOption.click();
-        console.log(`Clicked ${preferencesText} option`);
-    } catch (error) {
-        console.error(`Error in clickSettingsAndPreferences:`, error.message);
+        const observer = new MutationObserver((mutations, obs) => {
+            const preferencesOption = Array.from(document.querySelectorAll('button, div[role="menuitem"]'))
+                .find(el => el.textContent.trim() === preferencesText);
+            
+            if (preferencesOption) {
+                preferencesOption.click();
+                obs.disconnect();
+            }
+        });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        setTimeout(() => observer.disconnect(), 1000);
     }
 }
 
