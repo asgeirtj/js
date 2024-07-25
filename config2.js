@@ -5,10 +5,9 @@ function waitForElement(selector) {
             return resolve(document.querySelector(selector));
         }
 
-        const observer = new MutationObserver((mutations, observer) => {
-            const element = document.querySelector(selector);
-            if (element) {
-                resolve(element);
+        const observer = new MutationObserver(mutations => {
+            if (document.querySelector(selector)) {
+                resolve(document.querySelector(selector));
                 observer.disconnect();
             }
         });
@@ -20,40 +19,32 @@ function waitForElement(selector) {
     });
 }
 
-// Function to click the settings button and manage plugins option
+// Function to click settings button and manage plugins option
 async function clickManagePluginsButton() {
-    console.log('Cmd+O pressed, opening Manage Plugins');
+    console.log('Cmd+O pressed, attempting to open Manage Plugins');
 
-    // Using a class-based selector for the dropdown button
-    const dropdownButtonSelector = 'button[id^="headlessui-menu-button"]'; // Adjusted selector
+    const pluginsButton = document.querySelector('button[id^="headlessui-menu-button-"]');
 
-    try {
-        const dropdownButton = await waitForElement(dropdownButtonSelector);
-        if (dropdownButton) {
-            console.log('Dropdown button found:', dropdownButton);
-            dropdownButton.click();
-            console.log('Dropdown button clicked');
-            
-            // Wait for 500ms to make sure the dropdown menu has appeared
-            setTimeout(async () => {
-                // The "Manage Plugins" item within the role="menuitem"
-                const managePluginsItemSelector = 'div[role="menuitem"] div.truncate';
-                
-                const menuItems = document.querySelectorAll(managePluginsItemSelector);
-                const managePluginsItem = Array.from(menuItems).find(item => item.textContent.trim() === "Manage Plugins");
+    if (pluginsButton) {
+        pluginsButton.click();
+        console.log('Clicked plugins button');
 
-                if (managePluginsItem) {
-                    managePluginsItem.click();
-                    console.log('Manage Plugins item clicked');
-                } else {
-                    console.log('Manage Plugins item not found');
-                }
-            }, 500); // Increased the delay to 500ms
-        } else {
-            console.log('Dropdown button not found');
-        }
-    } catch (err) {
-        console.error("Error finding the dropdown button: ", err);
+        setTimeout(() => {
+            const managePluginsItem = Array.from(document.querySelectorAll('div[role="menuitem"]'))
+                .find(item => {
+                    const truncateDiv = item.querySelector('div.truncate');
+                    return truncateDiv && truncateDiv.textContent.trim() === 'Manage Plugins';
+                });
+
+            if (managePluginsItem) {
+                managePluginsItem.click();
+                console.log('Clicked Manage Plugins option');
+            } else {
+                console.log('Manage Plugins option not found in menu');
+            }
+        }, 100);
+    } else {
+        console.log('Plugins button not found');
     }
 }
 
@@ -148,8 +139,6 @@ textareaObserver.observe(document.body, {
     subtree: true
 });
 
-console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, new chat button (Cmd+K), toggle voice input (Cmd+1), stop button (F2), click latest play button (Cmd+L), click Models button (Cmd+J), and manage plugins button (Cmd+O).');
-
 // Supporting functions used in the script
 function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
     const settingsButton = document.querySelector(settingsButtonSelector);
@@ -200,3 +189,5 @@ function clickLatestPlayButton() {
         console.log("No play buttons found");
     }
 }
+
+console.log('Full enhanced script loaded with all functionalities including Manage Plugins (Cmd+O), model menu height adjustment, and various keyboard shortcuts.');
