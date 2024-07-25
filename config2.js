@@ -1,14 +1,14 @@
 // Function to wait for an element to appear
-function waitForElement(selector) {
-    return new Promise(resolve => {
+function waitForElement(selector, timeout = 5000) {
+    return new Promise((resolve) => {
         if (document.querySelector(selector)) {
             return resolve(document.querySelector(selector));
         }
 
-        const observer = new MutationObserver(mutations => {
+        const observer = new MutationObserver(() => {
             if (document.querySelector(selector)) {
-                resolve(document.querySelector(selector));
                 observer.disconnect();
+                resolve(document.querySelector(selector));
             }
         });
 
@@ -16,35 +16,32 @@ function waitForElement(selector) {
             childList: true,
             subtree: true
         });
+
+        setTimeout(() => {
+            observer.disconnect();
+            resolve(null);
+        }, timeout);
     });
 }
 
-// Function to click settings button and manage plugins option
+// Function to click the 'Manage Plugins' button
 async function clickManagePluginsButton() {
     console.log('Cmd+O pressed, attempting to open Manage Plugins');
 
-    const pluginsButton = document.querySelector('button[id^="headlessui-menu-button-"]');
+    try {
+        const pluginsButton = await waitForElement('button:has(svg.w-6.h-6.text-blue-500)');
+        if (!pluginsButton) throw new Error('Plugins button not found');
 
-    if (pluginsButton) {
         pluginsButton.click();
         console.log('Clicked plugins button');
 
-        setTimeout(() => {
-            const managePluginsItem = Array.from(document.querySelectorAll('div[role="menuitem"]'))
-                .find(item => {
-                    const truncateDiv = item.querySelector('div.truncate');
-                    return truncateDiv && truncateDiv.textContent.trim() === 'Manage Plugins';
-                });
+        const managePluginsItem = await waitForElement('div[role="menuitem"]:has(div.truncate:contains("Manage Plugins"))');
+        if (!managePluginsItem) throw new Error('Manage Plugins option not found');
 
-            if (managePluginsItem) {
-                managePluginsItem.click();
-                console.log('Clicked Manage Plugins option');
-            } else {
-                console.log('Manage Plugins option not found in menu');
-            }
-        }, 100);
-    } else {
-        console.log('Plugins button not found');
+        managePluginsItem.click();
+        console.log('Clicked Manage Plugins option');
+    } catch (error) {
+        console.error('Error in clickManagePluginsButton:', error.message);
     }
 }
 
@@ -60,7 +57,39 @@ function clickElementBySelector(selector) {
     }
 }
 
-// Function to adjust model menu height
+// Function to toggle voice input
+function toggleVoiceInput() {
+    const finishButton = Array.from(document.querySelectorAll('button'))
+        .find(button => button.textContent.includes('Finish'));
+    if (finishButton) {
+        finishButton.click();
+    } else {
+        clickElementBySelector('button[data-element-id="voice-input-button"]');
+    }
+}
+
+// Function to click stop button
+function clickStopButton() {
+    const stopButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === "Stop");
+    if (stopButton) {
+        stopButton.click();
+    } else {
+        console.log("Stop button not found");
+    }
+}
+
+// Function to click latest play button
+function clickLatestPlayButton() {
+    const playButtons = document.querySelectorAll('button[data-element-id="in-message-play-button"]');
+    if (playButtons.length > 0) {
+        playButtons[playButtons.length - 1].click();
+        console.log("Clicked the latest play button");
+    } else {
+        console.log("No play buttons found");
+    }
+}
+
+// Adjust model menu height
 const menuObserver = new MutationObserver(() => {
     const modelMenu = document.querySelector('div[role="menu"] .py-2.max-h-\\[300px\\].overflow-auto');
     if (modelMenu) {
@@ -139,55 +168,23 @@ textareaObserver.observe(document.body, {
     subtree: true
 });
 
-// Supporting functions used in the script
-function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
-    const settingsButton = document.querySelector(settingsButtonSelector);
-    if (settingsButton) {
+// Supporting function to click settings and preferences
+async function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
+    try {
+        const settingsButton = await waitForElement(settingsButtonSelector);
+        if (!settingsButton) throw new Error('Settings button not found');
+
         settingsButton.click();
-        const observer = new MutationObserver((mutations, obs) => {
-            const preferencesOption = Array.from(document.querySelectorAll('button, div[role="menuitem"]'))
-                .find(el => el.textContent.trim() === preferencesText);
-            
-            if (preferencesOption) {
-                preferencesOption.click();
-                obs.disconnect();
-            }
-        });
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-        setTimeout(() => observer.disconnect(), 1000);
+        console.log('Clicked settings button');
+
+        const preferencesOption = await waitForElement(`button:contains("${preferencesText}"), div[role="menuitem"]:contains("${preferencesText}")`);
+        if (!preferencesOption) throw new Error(`${preferencesText} option not found`);
+
+        preferencesOption.click();
+        console.log(`Clicked ${preferencesText} option`);
+    } catch (error) {
+        console.error(`Error in clickSettingsAndPreferences:`, error.message);
     }
 }
 
-function toggleVoiceInput() {
-    const finishButton = Array.from(document.querySelectorAll('button'))
-        .find(button => button.textContent.includes('Finish'));
-    if (finishButton) {
-        finishButton.click();
-    } else {
-        clickElementBySelector('button[data-element-id="voice-input-button"]');
-    }
-}
-
-function clickStopButton() {
-    const stopButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === "Stop");
-    if (stopButton) {
-        stopButton.click();
-    } else {
-        console.log("Stop button not found");
-    }
-}
-
-function clickLatestPlayButton() {
-    const playButtons = document.querySelectorAll('button[data-element-id="in-message-play-button"]');
-    if (playButtons.length > 0) {
-        playButtons[playButtons.length - 1].click();
-        console.log("Clicked the latest play button");
-    } else {
-        console.log("No play buttons found");
-    }
-}
-
-console.log('Full enhanced script loaded with all functionalities including Manage Plugins (Cmd+O), model menu height adjustment, and various keyboard shortcuts.');
+console.log('Full enhanced script loaded with all functionalities, including Manage Plugins (Cmd+O), model menu height adjustment, and various keyboard shortcuts.');
