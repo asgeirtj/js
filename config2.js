@@ -1,6 +1,3 @@
-// Typing Mind Extension Script
-// Date: 2023-10-03
-
 // Function to wait for an element to appear
 function waitForElement(selector) {
   return new Promise(resolve => {
@@ -23,44 +20,19 @@ function waitForElement(selector) {
 }
 
 // Function to click settings button and manage plugins option
-function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
-  const settingsButton = document.querySelector(settingsButtonSelector);
-  if (settingsButton) {
-    settingsButton.click();
-    const observer = new MutationObserver((mutations, obs) => {
-      const preferencesOption = Array.from(document.querySelectorAll('button, div[role="menuitem"]'))
-        .find(el => el.textContent.trim() === preferencesText);
-      
-      if (preferencesOption) {
-        preferencesOption.click();
-        obs.disconnect();
-      }
-    });
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-    setTimeout(() => observer.disconnect(), 1000);
-  }
-}
-
-// New Function to handle clicking 'Manage Plugins'
-function clickManagePluginsButton() {
+async function clickManagePluginsButton() {
   console.log('Cmd+O pressed, opening Manage Plugins');
 
   // Click the dropdown button to open the menu
-  const dropdownButtonSelector = 'button#headlessui-menu-button-\\:rg\\:';
-  const dropdownButton = document.querySelector(dropdownButtonSelector);
+  await clickElementBySelector('button#headlessui-menu-button-\\:rg\\:');
 
-  if (dropdownButton) {
-    dropdownButton.click();
-    console.log('Dropdown button clicked');
-    
-    // Wait briefly to ensure the dropdown menu has opened
-    setTimeout(() => clickSettingsAndPreferences(dropdownButtonSelector, 'Manage Plugins'), 100);
-  } else {
-    console.log('Dropdown button not found');
-  }
+  // Wait for the menu to appear and click the "Manage Plugins" option
+  waitForElement('div.truncate:contains("Manage Plugins")')
+    .then(button => {
+      button.click();
+      console.log("Clicked Manage Plugins button");
+    })
+    .catch(() => console.log("Manage Plugins button not found"));
 }
 
 // Supporting function to click an element by selector
@@ -98,7 +70,7 @@ document.addEventListener('keydown', function(event) {
         break;
       case ',':
         event.preventDefault();
-        clickSettingsAndPreferences('button[data-element-id="settings-button"].cursor-default.bg-white\\/20', 'Preferences');
+        clickSettingsAndPreferences('button[data-element-id="settings-button"].cursor-default.bg-white\\/20', "Preferences");
         break;
       case 'R':
         if (event.shiftKey) {
@@ -112,7 +84,7 @@ document.addEventListener('keydown', function(event) {
         break;
       case 'j':
         event.preventDefault();
-        clickSettingsAndPreferences('button[data-element-id="settings-button"].cursor-default.bg-white\\/20', 'Models');
+        clickSettingsAndPreferences('button[data-element-id="settings-button"].cursor-default.bg-white\\/20', "Models");
         break;
       case 'o':
         event.preventDefault();
@@ -157,6 +129,27 @@ textareaObserver.observe(document.body, {
 console.log('Enhanced script loaded with all functionalities including model menu height adjustment, keyboard shortcuts, new chat button (Cmd+K), toggle voice input (Cmd+1), stop button (F2), click latest play button (Cmd+L), click Models button (Cmd+J), and manage plugins button (Cmd+O).');
 
 // Supporting functions used in the script
+function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
+  const settingsButton = document.querySelector(settingsButtonSelector);
+  if (settingsButton) {
+    settingsButton.click();
+    const observer = new MutationObserver((mutations, obs) => {
+      const preferencesOption = Array.from(document.querySelectorAll('button, div[role="menuitem"]'))
+        .find(el => el.textContent.trim() === preferencesText);
+      
+      if (preferencesOption) {
+        preferencesOption.click();
+        obs.disconnect();
+      }
+    });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+    setTimeout(() => observer.disconnect(), 1000);
+  }
+}
+
 function toggleVoiceInput() {
   const finishButton = Array.from(document.querySelectorAll('button'))
     .find(button => button.textContent.includes('Finish'));
