@@ -4,7 +4,7 @@
  * 
  * Updates in this version:
  * - Added Cmd+K functionality to reset character or start a new chat if the reset button is not found.
- * - Improved auto-play setting toggle through simulated hover and visibility checks.
+ * - Improved auto-play setting toggle through direct click instead of hover.
  * 
  * Shortcuts include:
  * - Cmd+K: Reset character if agent is selected but no new chat, otherwise new chat
@@ -47,54 +47,12 @@ function waitForElement(selector, timeout = 3000) {
     });
 }
 
-// Function to simulate hover on an element and then wait for visibility of a target item
-function simulateHoverAndFind(elementSelector, targetSelector, timeout = 3000) {
-    return new Promise((resolve, reject) => {
-        const element = document.querySelector(elementSelector);
-        if (element) {
-            simulateHover(element);
-            console.log(`Hovered over element: ${elementSelector}`);
-
-            const observer = new MutationObserver((mutations, obs) => {
-                const targetElement = document.querySelector(targetSelector);
-                if (targetElement && targetElement.offsetParent !== null) { // checking visibility
-                    resolve(targetElement);
-                    obs.disconnect();
-                    console.log(`Found and visible element: ${targetSelector}`);
-                }
-            });
-
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-
-            setTimeout(() => {
-                observer.disconnect();
-                reject(new Error(`Element not found within timeout: ${targetSelector}`));
-            }, timeout);
-        } else {
-            reject(new Error(`Hover target not found: ${elementSelector}`));
-        }
-    });
-}
-
-// Function to simulate hover on an element
-function simulateHover(element) {
-    const event = new MouseEvent('mouseover', {
-        view: window,
-        bubbles: true,
-        cancelable: true
-    });
-    element.dispatchEvent(event);
-}
-
 // Function to toggle auto-play setting without hovering
 async function toggleAutoPlaySetting() {
     try {
         // Directly select the Settings button
         const settingsButton = document.querySelector('button.group-hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline');
-
+        
         if (settingsButton) {
             settingsButton.click();
             console.log('Clicked Settings button');
@@ -112,7 +70,7 @@ async function toggleAutoPlaySetting() {
             const doneButton = await waitForElement('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
             console.log('Done button found:', doneButton);
             doneButton.click();
-            
+
         } else {
             console.log('Settings button not found');
         }
@@ -121,7 +79,6 @@ async function toggleAutoPlaySetting() {
         console.error('Error in toggling autoplay setting:', error);
     }
 }
-
 
 // Function to check and click Reset Character or New Chat for Cmd+K
 function handleCmdK() {
@@ -244,4 +201,4 @@ function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
     }
 }
 
-console.log('Typing Mind Extension Script - Version 1.1 Date Updated: 2023-10-05 Updates in this version - Added Cmd+K functionality to reset character or start a new chat if the reset button is not found. - Improved auto-play setting toggle through simulated hover and visibility checks.');
+console.log('Typing Mind Extension Script - Version 1.1 | Date Updated: 2023-10-05 | Updates: - Added Cmd+K functionality to reset character or start a new chat if the reset button is not found. - Improved auto-play setting toggle through direct click instead of hover.');
