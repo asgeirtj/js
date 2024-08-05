@@ -89,33 +89,39 @@ function simulateHover(element) {
     element.dispatchEvent(event);
 }
 
-// Function to toggle auto-play setting
+// Function to toggle auto-play setting without hovering
 async function toggleAutoPlaySetting() {
     try {
-        const hoverParentSelector = '[data-element-id="additional-actions-of-response-container"]';
-        const settingsButtonSelector = '.group\\:hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline';
-        
-        const settingsButton = await simulateHoverAndFind(hoverParentSelector, settingsButtonSelector);
-        settingsButton.click();
+        // Directly select the Settings button
+        const settingsButton = document.querySelector('button.group-hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline');
 
-        // Wait for the modal to appear
-        const modal = await waitForElement('[data-element-id="pop-up-modal"]');
-        console.log('Modal appeared:', modal);
+        if (settingsButton) {
+            settingsButton.click();
+            console.log('Clicked Settings button');
 
-        // Toggle the "Auto play assistant messages" switch
-        const toggleButton = await waitForElement('[data-element-id="plugins-switch-disabled"]');
-        console.log('Toggle switch found:', toggleButton);
-        toggleButton.click();
+            // Wait for the modal to appear
+            const modal = await waitForElement('[data-element-id="pop-up-modal"]');
+            console.log('Modal appeared:', modal);
 
-        // Click the "Done" button
-        const doneButton = await waitForElement('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
-        console.log('Done button found:', doneButton);
-        doneButton.click();
+            // Toggle the "Auto play assistant messages" switch
+            const toggleButton = await waitForElement('[data-element-id="plugins-switch-disabled"]');
+            console.log('Toggle switch found:', toggleButton);
+            toggleButton.click();
+
+            // Click the "Done" button
+            const doneButton = await waitForElement('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
+            console.log('Done button found:', doneButton);
+            doneButton.click();
+            
+        } else {
+            console.log('Settings button not found');
+        }
         
     } catch (error) {
         console.error('Error in toggling autoplay setting:', error);
     }
 }
+
 
 // Function to check and click Reset Character or New Chat for Cmd+K
 function handleCmdK() {
