@@ -1,6 +1,11 @@
 /*
- * Typing Mind Extension Script
- * This script adds various keyboard shortcuts and functionalities to Typing Mind.
+ * Typing Mind Extension Script - Version 1.1
+ * Date Updated: 2023-10-05
+ * 
+ * Updates in this version:
+ * - Added Cmd+K functionality to reset character or start a new chat if the reset button is not found.
+ * - Improved auto-play setting toggle through simulated hover and visibility checks.
+ * 
  * Shortcuts include:
  * - Cmd+K: Reset character if agent is selected but no new chat, otherwise new chat
  * - Cmd+1: Toggle voice input
@@ -233,4 +238,4 @@ function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
     }
 }
 
-console.log('Enhanced script loaded for full functionality including Cmd+K reset or new chat, and toggle auto-play setting.');
+console.log('Typing Mind Extension Script - Version 1.1 Date Updated: 2023-10-05 Updates in this version - Added Cmd+K functionality to reset character or start a new chat if the reset button is not found. - Improved auto-play setting toggle through simulated hover and visibility checks.');
