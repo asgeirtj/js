@@ -1,3 +1,19 @@
+/*
+ * Typing Mind Extension Script
+ * This script adds various keyboard shortcuts and functionalities to Typing Mind.
+ * Shortcuts include:
+ * - Cmd+K: Reset character if agent selected but no new chat, otherwise new chat
+ * - Cmd+1: Toggle voice input
+ * - Cmd+, : Open Preferences
+ * - Cmd+Shift+R: Regenerate response
+ * - Cmd+L: Play latest message
+ * - Cmd+J: Open Models
+ * - Cmd+O: Open Manage Plugins
+ * - Cmd+3: Edit second-to-newest message
+ * - Cmd+U: Toggle auto-play setting in TTS and click Done
+ * - F2: Stop button
+ */
+
 // Function to wait for an element to appear
 function waitForElement(selector, timeout = 3000) {
     return new Promise((resolve, reject) => {
@@ -232,4 +248,4 @@ function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
     }
 }
 
-console.log('Full enhanced script loaded with all functionalities, including Manage Plugins (Cmd+O), Edit Message (Cmd+3), model menu height adjustment, and various keyboard shortcuts.');
+console.log('Full enhanced script loaded with all functionalities, including Manage Plugins (Cmd+O), Edit second-to-newest Message (Cmd+3), model menu height adjustment, and various keyboard shortcuts. Additionally, TTS settings toggled with Cmd+U.');
