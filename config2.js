@@ -1,10 +1,10 @@
 /*
- * Typing Mind Extension Script - Version 1.3
- * Date Updated: Updated on 2024-08-05 08:12:48
+ * Typing Mind Extension Script - Version 1.4
+ * Date Updated: Updated on 2024-10-06
  * 
  * Updates in this version:
- * - Added Cmd+K functionality to reset character or start a new chat if the reset button is not found.
- * - Improved auto-play setting toggle through direct click instead of hover.
+ * - Adjusted selectors for auto-play toggle switch to match the given button elements.
+ * - Ensured correct targeting of "Auto play assistant messages" switch.
  * 
  * Shortcuts include:
  * - Cmd+K: Reset character if agent is selected but no new chat, otherwise new chat
@@ -61,26 +61,26 @@ async function toggleAutoPlaySetting() {
             const modal = await waitForElement('[data-element-id="pop-up-modal"]');
             console.log('Modal appeared:', modal);
 
-            // Toggle the "Auto play assistant messages" switch
-            let toggleButton = await waitForElement('[data-element-id="plugins-switch-disabled"], [data-element-id="plugins-switch-enabled"]');
-            console.log('Toggle switch found:', toggleButton);
-            toggleButton.click();
+            // Locate the "Auto play assistant messages" switch using XPath
+            const toggleButton = document.evaluate('//button[following-sibling::span[contains(text(), "Auto play assistant messages")]]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (toggleButton) {
+                console.log('Auto play switch found:', toggleButton);
+                toggleButton.click();
 
-            // Click the "Done" button
-            const doneButton = await waitForElement('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
-            console.log('Done button found:', doneButton);
-            doneButton.click();
-
+                // Click the "Done" button
+                const doneButton = await waitForElement('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
+                console.log('Done button found:', doneButton);
+                doneButton.click();
+            } else {
+                console.log('Auto play switch not found');
+            }
         } else {
             console.log('Settings button not found');
         }
-
     } catch (error) {
         console.error('Error in toggling autoplay setting:', error);
     }
 }
-
-
 
 // Function to check and click Reset Character or New Chat for Cmd+K
 function handleCmdK() {
@@ -202,5 +202,3 @@ function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
         setTimeout(() => observer.disconnect(), 1000);
     }
 }
-
-console.log('Typing Mind Extension Script - Version 1.1 | Date Updated: 2023-10-05 | Updates: - Added Cmd+K functionality to reset character or start a new chat if the reset button is not found. - Improved auto-play setting toggle through direct click instead of hover.');
