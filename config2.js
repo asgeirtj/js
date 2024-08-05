@@ -2,7 +2,7 @@
  * Typing Mind Extension Script
  * This script adds various keyboard shortcuts and functionalities to Typing Mind.
  * Shortcuts include:
- * - Cmd+K: Reset character if agent selected but no new chat, otherwise new chat
+ * - Cmd+K: Reset character if agent is selected but no new chat, otherwise new chat
  * - Cmd+1: Toggle voice input
  * - Cmd+, : Open Preferences
  * - Cmd+Shift+R: Regenerate response
@@ -37,8 +37,40 @@ function waitForElement(selector, timeout = 3000) {
 
         setTimeout(() => {
             observer.disconnect();
-            reject(new Error('Element not found within timeout'));
+            reject(new Error(`Element not found within timeout: ${selector}`));
         }, timeout);
+    });
+}
+
+// Function to simulate hover on an element and then wait for visibility of a target item
+function simulateHoverAndFind(elementSelector, targetSelector, timeout = 3000) {
+    return new Promise((resolve, reject) => {
+        const element = document.querySelector(elementSelector);
+        if (element) {
+            simulateHover(element);
+            console.log(`Hovered over element: ${elementSelector}`);
+
+            const observer = new MutationObserver((mutations, obs) => {
+                const targetElement = document.querySelector(targetSelector);
+                if (targetElement && targetElement.offsetParent !== null) { // checking visibility
+                    resolve(targetElement);
+                    obs.disconnect();
+                    console.log(`Found and visible element: ${targetSelector}`);
+                }
+            });
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+
+            setTimeout(() => {
+                observer.disconnect();
+                reject(new Error(`Element not found within timeout: ${targetSelector}`));
+            }, timeout);
+        } else {
+            reject(new Error(`Hover target not found: ${elementSelector}`));
+        }
     });
 }
 
@@ -52,110 +84,63 @@ function simulateHover(element) {
     element.dispatchEvent(event);
 }
 
-// Function to click the settings button, toggle the switch, and click the done button
+// Function to toggle auto-play setting
 async function toggleAutoPlaySetting() {
     try {
-        // Find the last assistant message and simulate hover to make the "Settings" button visible
-        const assistantMessages = document.querySelectorAll('[data-element-id="ai-response"]');
-        if (assistantMessages.length > 0) {
-            const lastAssistantMessage = assistantMessages[assistantMessages.length - 1];
-            simulateHover(lastAssistantMessage);
-            console.log('Simulated hover over the last assistant message');
+        const hoverParentSelector = '[data-element-id="additional-actions-of-response-container"]';
+        const settingsButtonSelector = '.group\\:hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline';
+        
+        const settingsButton = await simulateHoverAndFind(hoverParentSelector, settingsButtonSelector);
+        settingsButton.click();
 
-            // Wait for the "Settings" button to become visible
-            await waitForElement('.group\\:hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline');
-            
-            // Click the "Settings" button
-            const settingsButton = document.querySelector('.group\\:hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline');
-            if (settingsButton) {
-                settingsButton.click();
-                console.log('Clicked settings button');
-            } else {
-                console.log('Settings button not found');
-                return;
-            }
+        // Wait for the modal to appear
+        const modal = await waitForElement('[data-element-id="pop-up-modal"]');
+        console.log('Modal appeared:', modal);
 
-            // Wait for the modal to appear
-            await waitForElement('[data-element-id="pop-up-modal"]');
-            console.log('Modal appeared');
+        // Toggle the "Auto play assistant messages" switch
+        const toggleButton = await waitForElement('[data-element-id="plugins-switch-disabled"]');
+        console.log('Toggle switch found:', toggleButton);
+        toggleButton.click();
 
-            // Toggle the "Auto play assistant messages" switch
-            const toggleButton = document.querySelector('[data-element-id="plugins-switch-disabled"]');
-            if (toggleButton) {
-                toggleButton.click();
-                console.log('Toggled the auto play assistant messages switch');
-            } else {
-                console.log('Auto play assistant messages switch not found');
-                return;
-            }
-
-            // Click the "Done" button
-            const doneButton = document.querySelector('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
-            if (doneButton) {
-                doneButton.click();
-                console.log('Clicked Done button');
-            } else {
-                console.log('Done button not found');
-            }
-        } else {
-            console.log('No assistant messages found to simulate hover');
-        }
+        // Click the "Done" button
+        const doneButton = await waitForElement('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
+        console.log('Done button found:', doneButton);
+        doneButton.click();
+        
     } catch (error) {
-        console.error('Error in toggling auto play setting:', error);
+        console.error('Error in toggling autoplay setting:', error);
     }
 }
 
-// Function to check if the New Chat button does nothing
-function isAgentSelectedWithoutChat() {
-    const newChatButton = document.querySelector('button[data-element-id="new-chat-button-in-side-bar"]');
-    return newChatButton && newChatButton.disabled;
-}
-
-// Function to click the Reset Character button
-function clickResetCharacterButton() {
+// Function to check and click Reset Character or New Chat for Cmd+K
+function handleCmdK() {
     const resetButton = document.querySelector('button[data-element-id="reset-character-button"]');
     if (resetButton) {
         resetButton.click();
         console.log('Clicked reset character button');
     } else {
-        console.log('Reset character button not found');
+        const newChatButton = document.querySelector('button[data-element-id="new-chat-button-in-side-bar"]');
+        if (newChatButton) {
+            newChatButton.click();
+            console.log('Clicked new chat button');
+        } else {
+            console.log('New chat button not found');
+        }
     }
 }
 
-// Function to click the New Chat button
-function clickNewChatButton() {
-    const newChatButton = document.querySelector('button[data-element-id="new-chat-button-in-side-bar"]');
-    if (newChatButton) {
-        newChatButton.click();
-        console.log('Clicked new chat button');
-    } else {
-        console.log('New chat button not found');
+// Attach event listener for Cmd+K (or Ctrl+K on Windows/Linux)
+document.addEventListener('keydown', function(event) {
+    if (event.metaKey && event.key === 'k') {
+        event.preventDefault();
+        handleCmdK();
     }
-}
+});
 
-// Function to click the second-to-newest Edit Message button
-function clickSecondToNewestEditMessageButton() {
-    const editButtons = document.querySelectorAll('button[data-element-id="edit-message-button"]');
-    if (editButtons.length > 1) {
-        editButtons[editButtons.length - 2].click();
-        console.log('Clicked the second-to-newest edit message button');
-    } else {
-        console.log('Not enough edit message buttons found');
-    }
-}
-
-// Event listener for keyboard shortcuts
+// Attach additional keyboard shortcuts
 document.addEventListener('keydown', function(event) {
     if (event.metaKey) {
         switch (event.key) {
-            case 'k':
-                event.preventDefault();
-                if (isAgentSelectedWithoutChat()) {
-                    clickResetCharacterButton();
-                } else {
-                    clickNewChatButton();
-                }
-                break;
             case '1':
                 event.preventDefault();
                 toggleVoiceInput();
@@ -248,4 +233,4 @@ function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
     }
 }
 
-console.log('Full enhanced script loaded with all functionalities, including Manage Plugins (Cmd+O), Edit second-to-newest Message (Cmd+3), model menu height adjustment, and various keyboard shortcuts. Additionally, TTS settings toggled with Cmd+U.');
+console.log('Enhanced script loaded for full functionality including Cmd+K reset or new chat, and toggle auto-play setting.');
