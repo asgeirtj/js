@@ -58,11 +58,11 @@ async function toggleAutoPlaySetting() {
             console.log('Clicked Settings button');
 
             // Wait for the modal to appear
-            const modal = await waitForElement('[data-element-id="pop-up-modal"]');
+            const modal = await waitForElement('[data-element-id="pop-up-modal"]'); 
             console.log('Modal appeared:', modal);
 
-            // Toggle the "Auto play assistant messages" switch
-            const toggleButton = await waitForElement('[data-element-id="plugins-switch-disabled"]');
+            // Toggle the "Auto play assistant messages" switch using the new data-element-id
+            const toggleButton = await waitForElement('[data-element-id="custom-plugins-switch-disabled"]'); 
             console.log('Toggle switch found:', toggleButton);
             toggleButton.click();
 
@@ -79,6 +79,7 @@ async function toggleAutoPlaySetting() {
         console.error('Error in toggling autoplay setting:', error);
     }
 }
+
 
 // Function to check and click Reset Character or New Chat for Cmd+K
 function handleCmdK() {
