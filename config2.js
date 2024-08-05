@@ -1,13 +1,14 @@
 /*
- * Typing Mind Extension Script - Version 1.41
+ * Typing Mind Extension Script - Version 1.5
  * Date Updated: Updated on 2024-10-06
  * 
  * Updates in this version:
  * - Adjusted selectors for auto-play toggle switch to match the given button elements.
  * - Ensured correct targeting of "Auto play assistant messages" switch.
+ * - Reintroduced missing functions for voice input, playing latest message, managing plugins, stopping, and editing messages.
  * 
  * Shortcuts include:
- * - Cmd+K: Reset character if agent is selected but no new chat, otherwise new chat
+ * - Cmd+K: Reset character or start a new chat
  * - Cmd+1: Toggle voice input
  * - Cmd+, : Open Preferences
  * - Cmd+Shift+R: Regenerate response
@@ -111,6 +112,90 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+// Function to toggle voice input
+function toggleVoiceInput() {
+    const finishButton = Array.from(document.querySelectorAll('button'))
+        .find(button => button.textContent.includes('Finish'));
+    if (finishButton) {
+        finishButton.click();
+    } else {
+        clickElementBySelector('button[data-element-id="voice-input-button"]');
+    }
+}
+
+// Function to click latest play button
+function clickLatestPlayButton() {
+    const playButtons = document.querySelectorAll('button[data-element-id="in-message-play-button"]');
+    if (playButtons.length > 0) {
+        playButtons[playButtons.length - 1].click();
+        console.log("Clicked the latest play button");
+    } else {
+        console.log("No play buttons found");
+    }
+}
+
+// Function to click manage plugins button
+async function clickManagePluginsButton() {
+    console.log('Cmd+O pressed, attempting to open Manage Plugins');
+
+    const pluginsButton = document.querySelector('button svg.w-6.h-6.text-blue-500').closest('button');
+
+    if (pluginsButton) {
+        pluginsButton.click();
+        console.log('Clicked plugins button');
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const menuItems = document.querySelectorAll('div[role="menuitem"]');
+        const managePluginsItem = Array.from(menuItems).find(item => {
+            const truncateDiv = item.querySelector('div.truncate');
+            return truncateDiv && truncateDiv.textContent.trim() === 'Manage Plugins';
+        });
+
+        if (managePluginsItem) {
+            managePluginsItem.click();
+            console.log('Clicked Manage Plugins option');
+        } else {
+            console.log('Manage Plugins option not found in menu');
+        }
+    } else {
+        console.log('Plugins button not found');
+    }
+}
+
+// Function to click stop button
+function clickStopButton() {
+    const stopButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === "Stop");
+    if (stopButton) {
+        stopButton.click();
+    } else {
+        console.log("Stop button not found");
+    }
+}
+
+// Function to click second-to-newest edit message button
+function clickEditMessageButton() {
+    const editButton = document.querySelector('button[data-element-id="edit-message-button"]');
+    if (editButton) {
+        editButton.click();
+        console.log('Clicked edit message button');
+    } else {
+        console.log('Edit message button not found');
+    }
+}
+
+// Additional supporting functions
+function clickElementBySelector(selector) {
+    const element = document.querySelector(selector);
+    if (element) {
+        element.click();
+        return true;
+    } else {
+        console.log(`Element with selector ${selector} not found`);
+        return false;
+    }
+}
+
 // Attach additional keyboard shortcuts
 document.addEventListener('keydown', function(event) {
     if (event.metaKey) {
@@ -143,7 +228,7 @@ document.addEventListener('keydown', function(event) {
                 break;
             case '3':
                 event.preventDefault();
-                clickSecondToNewestEditMessageButton();
+                clickEditMessageButton();
                 break;
             case 'u':
                 event.preventDefault();
@@ -206,3 +291,14 @@ function clickSettingsAndPreferences(settingsButtonSelector, preferencesText) {
         setTimeout(() => observer.disconnect(), 1000);
     }
 }
+
+// Adjust model menu height
+const menuObserver = new MutationObserver(() => {
+    const modelMenu = document.querySelector('div[role="menu"] .py-2.max-h-\\[300px\\].overflow-auto');
+    if (modelMenu) {
+        modelMenu.style.maxHeight = '500px';
+    }
+});
+menuObserver.observe(document.body, { childList: true, subtree: true });
+
+console.log('Full enhanced script loaded with all functionalities, including Manage Plugins (Cmd+O), Edit Message (Cmd+3), model menu height adjustment, and various keyboard shortcuts.');
