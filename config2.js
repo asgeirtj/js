@@ -1,6 +1,6 @@
 /*
- * Typing Mind Extension Script - Version 1.1
- * Date Updated: 2023-10-05
+ * Typing Mind Extension Script - Version 1.3
+ * Date Updated: Updated on 2024-08-05 08:12:48
  * 
  * Updates in this version:
  * - Added Cmd+K functionality to reset character or start a new chat if the reset button is not found.
