@@ -52,17 +52,17 @@ async function toggleAutoPlaySetting() {
     try {
         // Directly select the Settings button
         const settingsButton = document.querySelector('button.group-hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline');
-        
+
         if (settingsButton) {
             settingsButton.click();
             console.log('Clicked Settings button');
 
             // Wait for the modal to appear
-            const modal = await waitForElement('[data-element-id="pop-up-modal"]'); 
+            const modal = await waitForElement('[data-element-id="pop-up-modal"]');
             console.log('Modal appeared:', modal);
 
-            // Toggle the "Auto play assistant messages" switch using the new data-element-id
-            const toggleButton = await waitForElement('[data-element-id="custom-plugins-switch-disabled"]'); 
+            // Toggle the "Auto play assistant messages" switch
+            let toggleButton = await waitForElement('[data-element-id="plugins-switch-disabled"], [data-element-id="plugins-switch-enabled"]');
             console.log('Toggle switch found:', toggleButton);
             toggleButton.click();
 
@@ -74,11 +74,12 @@ async function toggleAutoPlaySetting() {
         } else {
             console.log('Settings button not found');
         }
-        
+
     } catch (error) {
         console.error('Error in toggling autoplay setting:', error);
     }
 }
+
 
 
 // Function to check and click Reset Character or New Chat for Cmd+K
