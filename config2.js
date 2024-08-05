@@ -26,40 +26,63 @@ function waitForElement(selector, timeout = 3000) {
     });
 }
 
+// Function to simulate hover on an element
+function simulateHover(element) {
+    const event = new MouseEvent('mouseover', {
+        view: window,
+        bubbles: true,
+        cancelable: true
+    });
+    element.dispatchEvent(event);
+}
+
 // Function to click the settings button, toggle the switch, and click the done button
 async function toggleAutoPlaySetting() {
     try {
-        // Click the "Settings" button
-        const settingsButton = document.querySelector('.group\\:hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline');
-        if (settingsButton) {
-            settingsButton.click();
-            console.log('Clicked settings button');
-        } else {
-            console.log('Settings button not found');
-            return;
-        }
+        // Find the last assistant message and simulate hover to make the "Settings" button visible
+        const assistantMessages = document.querySelectorAll('[data-element-id="ai-response"]');
+        if (assistantMessages.length > 0) {
+            const lastAssistantMessage = assistantMessages[assistantMessages.length - 1];
+            simulateHover(lastAssistantMessage);
+            console.log('Simulated hover over the last assistant message');
 
-        // Wait for the modal to appear
-        await waitForElement('[data-element-id="pop-up-modal"]');
-        console.log('Modal appeared');
+            // Wait for the "Settings" button to become visible
+            await waitForElement('.group\\:hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline');
+            
+            // Click the "Settings" button
+            const settingsButton = document.querySelector('.group\\:hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline');
+            if (settingsButton) {
+                settingsButton.click();
+                console.log('Clicked settings button');
+            } else {
+                console.log('Settings button not found');
+                return;
+            }
 
-        // Toggle the "Auto play assistant messages" switch
-        const toggleButton = document.querySelector('[data-element-id="plugins-switch-disabled"]');
-        if (toggleButton) {
-            toggleButton.click();
-            console.log('Toggled the auto play assistant messages switch');
-        } else {
-            console.log('Auto play assistant messages switch not found');
-            return;
-        }
+            // Wait for the modal to appear
+            await waitForElement('[data-element-id="pop-up-modal"]');
+            console.log('Modal appeared');
 
-        // Click the "Done" button
-        const doneButton = document.querySelector('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
-        if (doneButton) {
-            doneButton.click();
-            console.log('Clicked Done button');
+            // Toggle the "Auto play assistant messages" switch
+            const toggleButton = document.querySelector('[data-element-id="plugins-switch-disabled"]');
+            if (toggleButton) {
+                toggleButton.click();
+                console.log('Toggled the auto play assistant messages switch');
+            } else {
+                console.log('Auto play assistant messages switch not found');
+                return;
+            }
+
+            // Click the "Done" button
+            const doneButton = document.querySelector('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
+            if (doneButton) {
+                doneButton.click();
+                console.log('Clicked Done button');
+            } else {
+                console.log('Done button not found');
+            }
         } else {
-            console.log('Done button not found');
+            console.log('No assistant messages found to simulate hover');
         }
     } catch (error) {
         console.error('Error in toggling auto play setting:', error);
@@ -94,14 +117,14 @@ function clickNewChatButton() {
     }
 }
 
-// Function to click the latest Edit Message button
-function clickEditMessageButton() {
+// Function to click the second-to-newest Edit Message button
+function clickSecondToNewestEditMessageButton() {
     const editButtons = document.querySelectorAll('button[data-element-id="edit-message-button"]');
-    if (editButtons.length > 0) {
-        editButtons[editButtons.length - 1].click();
-        console.log('Clicked the latest edit message button');
+    if (editButtons.length > 1) {
+        editButtons[editButtons.length - 2].click();
+        console.log('Clicked the second-to-newest edit message button');
     } else {
-        console.log('Edit message button not found');
+        console.log('Not enough edit message buttons found');
     }
 }
 
@@ -145,7 +168,7 @@ document.addEventListener('keydown', function(event) {
                 break;
             case '3':
                 event.preventDefault();
-                clickEditMessageButton();
+                clickSecondToNewestEditMessageButton();
                 break;
             case 'u':
                 event.preventDefault();
@@ -160,17 +183,6 @@ document.addEventListener('keydown', function(event) {
         clickStopButton();
     }
 });
-
-// Function to click the edit message button
-function clickEditMessageButton() {
-    const editButtons = document.querySelectorAll('button[data-element-id="edit-message-button"]');
-    if (editButtons.length > 0) {
-        editButtons[editButtons.length - 1].click();
-        console.log('Clicked the latest edit message button');
-    } else {
-        console.log('Edit message button not found');
-    }
-}
 
 // Set text area rows
 function setTextareaRows() {
