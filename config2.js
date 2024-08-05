@@ -1,14 +1,16 @@
 // Function to wait for an element to appear
-function waitForElement(selector) {
-    return new Promise(resolve => {
-        if (document.querySelector(selector)) {
-            return resolve(document.querySelector(selector));
+function waitForElement(selector, timeout = 3000) {
+    return new Promise((resolve, reject) => {
+        const element = document.querySelector(selector);
+        if (element) {
+            resolve(element);
         }
 
-        const observer = new MutationObserver(mutations => {
-            if (document.querySelector(selector)) {
-                resolve(document.querySelector(selector));
-                observer.disconnect();
+        const observer = new MutationObserver((mutations, me) => {
+            const element = document.querySelector(selector);
+            if (element) {
+                resolve(element);
+                me.disconnect();
             }
         });
 
@@ -16,98 +18,104 @@ function waitForElement(selector) {
             childList: true,
             subtree: true
         });
+
+        setTimeout(() => {
+            observer.disconnect();
+            reject(new Error('Element not found within timeout'));
+        }, timeout);
     });
 }
 
-// Function to click the 'Manage Plugins' button
-async function clickManagePluginsButton() {
-    console.log('Cmd+O pressed, attempting to open Manage Plugins');
-
-    // First, find and click the plugins/settings button, identified by the distinctive puzzle piece icon
-    const pluginsButton = document.querySelector('button svg.w-6.h-6.text-blue-500').closest('button');
-
-    if (pluginsButton) {
-        pluginsButton.click();
-        console.log('Clicked plugins button');
-
-        // Wait briefly for the menu to appear
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        // Find and click the 'Manage Plugins' option
-        const menuItems = document.querySelectorAll('div[role="menuitem"]');
-        const managePluginsItem = Array.from(menuItems).find(item => {
-            const truncateDiv = item.querySelector('div.truncate');
-            return truncateDiv && truncateDiv.textContent.trim() === 'Manage Plugins';
-        });
-
-        if (managePluginsItem) {
-            managePluginsItem.click();
-            console.log('Clicked Manage Plugins option');
+// Function to click the settings button, toggle the switch, and click the done button
+async function toggleAutoPlaySetting() {
+    try {
+        // Click the "Settings" button
+        const settingsButton = document.querySelector('.group\\:hover\\:inline-block.sm\\:hidden.font-semibold.text-gray-500.hover\\:underline');
+        if (settingsButton) {
+            settingsButton.click();
+            console.log('Clicked settings button');
         } else {
-            console.log('Manage Plugins option not found in menu');
+            console.log('Settings button not found');
+            return;
         }
-    } else {
-        console.log('Plugins button not found');
+
+        // Wait for the modal to appear
+        await waitForElement('[data-element-id="pop-up-modal"]');
+        console.log('Modal appeared');
+
+        // Toggle the "Auto play assistant messages" switch
+        const toggleButton = document.querySelector('[data-element-id="plugins-switch-disabled"]');
+        if (toggleButton) {
+            toggleButton.click();
+            console.log('Toggled the auto play assistant messages switch');
+        } else {
+            console.log('Auto play assistant messages switch not found');
+            return;
+        }
+
+        // Click the "Done" button
+        const doneButton = document.querySelector('button[type="submit"].inline-flex.items-center.px-4.py-2.border.border-transparent.text-base.font-medium.rounded-md.shadow-sm.text-white.bg-blue-600.hover\\:bg-blue-700.focus\\:outline-none.focus\\:ring-2.focus\\:ring-offset-2.focus\\:ring-blue-500.disabled\\:bg-gray-400.gap-2');
+        if (doneButton) {
+            doneButton.click();
+            console.log('Clicked Done button');
+        } else {
+            console.log('Done button not found');
+        }
+    } catch (error) {
+        console.error('Error in toggling auto play setting:', error);
     }
 }
 
-// Additional supporting functions
-function clickElementBySelector(selector) {
-    const element = document.querySelector(selector);
-    if (element) {
-        element.click();
-        return true;
+// Function to check if the New Chat button does nothing
+function isAgentSelectedWithoutChat() {
+    const newChatButton = document.querySelector('button[data-element-id="new-chat-button-in-side-bar"]');
+    return newChatButton && newChatButton.disabled;
+}
+
+// Function to click the Reset Character button
+function clickResetCharacterButton() {
+    const resetButton = document.querySelector('button[data-element-id="reset-character-button"]');
+    if (resetButton) {
+        resetButton.click();
+        console.log('Clicked reset character button');
     } else {
-        console.log(`Element with selector ${selector} not found`);
-        return false;
+        console.log('Reset character button not found');
     }
 }
 
-function toggleVoiceInput() {
-    const finishButton = Array.from(document.querySelectorAll('button'))
-        .find(button => button.textContent.includes('Finish'));
-    if (finishButton) {
-        finishButton.click();
+// Function to click the New Chat button
+function clickNewChatButton() {
+    const newChatButton = document.querySelector('button[data-element-id="new-chat-button-in-side-bar"]');
+    if (newChatButton) {
+        newChatButton.click();
+        console.log('Clicked new chat button');
     } else {
-        clickElementBySelector('button[data-element-id="voice-input-button"]');
+        console.log('New chat button not found');
     }
 }
 
-function clickStopButton() {
-    const stopButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === "Stop");
-    if (stopButton) {
-        stopButton.click();
+// Function to click the latest Edit Message button
+function clickEditMessageButton() {
+    const editButtons = document.querySelectorAll('button[data-element-id="edit-message-button"]');
+    if (editButtons.length > 0) {
+        editButtons[editButtons.length - 1].click();
+        console.log('Clicked the latest edit message button');
     } else {
-        console.log("Stop button not found");
+        console.log('Edit message button not found');
     }
 }
-
-function clickLatestPlayButton() {
-    const playButtons = document.querySelectorAll('button[data-element-id="in-message-play-button"]');
-    if (playButtons.length > 0) {
-        playButtons[playButtons.length - 1].click();
-        console.log("Clicked the latest play button");
-    } else {
-        console.log("No play buttons found");
-    }
-}
-
-// Adjust model menu height
-const menuObserver = new MutationObserver(() => {
-    const modelMenu = document.querySelector('div[role="menu"] .py-2.max-h-\\[300px\\].overflow-auto');
-    if (modelMenu) {
-        modelMenu.style.maxHeight = '500px';
-    }
-});
-menuObserver.observe(document.body, { childList: true, subtree: true });
 
 // Event listener for keyboard shortcuts
 document.addEventListener('keydown', function(event) {
     if (event.metaKey) {
-        switch(event.key) {
+        switch (event.key) {
             case 'k':
                 event.preventDefault();
-                clickElementBySelector('button[data-element-id="new-chat-button-in-side-bar"]');
+                if (isAgentSelectedWithoutChat()) {
+                    clickResetCharacterButton();
+                } else {
+                    clickNewChatButton();
+                }
                 break;
             case '1':
                 event.preventDefault();
@@ -139,6 +147,10 @@ document.addEventListener('keydown', function(event) {
                 event.preventDefault();
                 clickEditMessageButton();
                 break;
+            case 'u':
+                event.preventDefault();
+                toggleAutoPlaySetting();
+                break;
             default:
                 break;
         }
@@ -151,10 +163,10 @@ document.addEventListener('keydown', function(event) {
 
 // Function to click the edit message button
 function clickEditMessageButton() {
-    const editButton = document.querySelector('button[data-element-id="edit-message-button"]');
-    if (editButton) {
-        editButton.click();
-        console.log('Clicked edit message button');
+    const editButtons = document.querySelectorAll('button[data-element-id="edit-message-button"]');
+    if (editButtons.length > 0) {
+        editButtons[editButtons.length - 1].click();
+        console.log('Clicked the latest edit message button');
     } else {
         console.log('Edit message button not found');
     }
