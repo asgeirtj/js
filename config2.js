@@ -1,5 +1,5 @@
 /*
- * Typing Mind Extension Script - Version 1.4
+ * Typing Mind Extension Script - Version 1.41
  * Date Updated: Updated on 2024-10-06
  * 
  * Updates in this version:
@@ -61,9 +61,13 @@ async function toggleAutoPlaySetting() {
             const modal = await waitForElement('[data-element-id="pop-up-modal"]');
             console.log('Modal appeared:', modal);
 
-            // Locate the "Auto play assistant messages" switch using XPath
-            const toggleButton = document.evaluate('//button[following-sibling::span[contains(text(), "Auto play assistant messages")]]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (toggleButton) {
+            // Locate the "Auto play assistant messages" switch
+            const sections = Array.from(document.querySelectorAll('button[data-element-id="plugins-switch-disabled"], button[data-element-id="plugins-switch-enabled"]')).filter(button => {
+                return button.nextElementSibling && button.nextElementSibling.textContent.includes('Auto play assistant messages');
+            });
+
+            if (sections.length > 0) {
+                const toggleButton = sections[0];
                 console.log('Auto play switch found:', toggleButton);
                 toggleButton.click();
 
