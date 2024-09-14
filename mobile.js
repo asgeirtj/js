@@ -1,28 +1,24 @@
 (function() {
     'use strict';
 
-    // Function to find and play the audio
-    function playAudio() {
-        // Look for the audio element or the play button
-        const audioElement = document.querySelector('audio') || document.querySelector('video');
-        const playButton = document.querySelector('button[aria-label="Play"], .play-button, [aria-label="Play"]');
-
-        if (audioElement) {
-            // If we found an audio element, try to play it
-            audioElement.play().catch(e => console.error('Auto-play failed:', e));
-        } else if (playButton) {
-            // If we found a play button, click it
+    function clickPlayButton() {
+        const playButton = document.querySelector('button.tts-play-button[data-element-id="in-message-play-button"]');
+        if (playButton) {
             playButton.click();
+            console.log('Play button clicked!');
+        } else {
+            console.log('Play button not found. Retrying...');
+            setTimeout(clickPlayButton, 500); // Retry after 500ms
         }
     }
 
-    // Run the function when the page loads
+    // Run when the page loads
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', playAudio);
+        document.addEventListener('DOMContentLoaded', clickPlayButton);
     } else {
-        playAudio();
+        clickPlayButton();
     }
 
-    // Also try again after a short delay, in case the audio loads late
-    setTimeout(playAudio, 1000);
+    // Also try again after a short delay, in case the button loads late
+    setTimeout(clickPlayButton, 1000);
 })();
