@@ -1,3 +1,6 @@
+// Source: https://asgeirtj.github.io/js/autoplay.js
+// Version: 1.0
+
 (function keepItAutoplayFriendly() {
   'use strict';
   
