@@ -1,14 +1,11 @@
 // Source: https://asgeirtj.github.io/js/autoplay.js
-// Version: 1.1
+// Version: 1.2
 
 (function keepItAutoplayFriendly() {
   'use strict';
   
   // Check if device is mobile
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
-  // Only proceed if mobile
-  if (!isMobile) return;
 
   console.log(`Autoplay Helper started on: ${navigator.userAgent}`);
 
