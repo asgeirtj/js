@@ -1,10 +1,13 @@
 // Source: https://asgeirtj.github.io/js/autoplay2.js
-// Version: 1.2
+// Version: 1.3
 
 (function keepItAutoplayFriendly() {
   'use strict';
 
   console.log('Autoplay Helper started');
+
+  // Remove specific button element
+  document.querySelector('button.w-full.focus\\:text-white.focus\\:outline-0.inline-flex.items-start.justify-start.flex-col.md\\:h-\\[50px\\].h-12.cursor-default.aspect-square.sm\\:aspect-auto.\\@\\[500px\\]\\:min-w-0.min-w-\\[58px\\]:nth-of-type(6)').style.display = 'none';
 
   // Helper function to simulate user interaction
   const simulateInteraction = () => {
