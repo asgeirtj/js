@@ -1,7 +1,13 @@
 (function keepItAutoplayFriendly() {
   'use strict';
+  
+  // Check if device is mobile
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  
+  // Only proceed if mobile
+  if (!isMobile) return;
 
-  console.log('Autoplay Helper Initialized.');
+  console.log('Mobile Autoplay Helper Initialized.');
 
   // Helper function to simulate user interaction
   const simulateInteraction = () => {
