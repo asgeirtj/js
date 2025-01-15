@@ -1,5 +1,5 @@
 // Source: https://asgeirtj.github.io/js/autoplay.js
-// Version: 1.2
+// Version: 1.3
 // Remember to increment version number when making changes
 
 (function keepItAutoplayFriendly() {
