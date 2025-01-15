@@ -1,5 +1,5 @@
 // Source: https://asgeirtj.github.io/js/autoplay.js
-// Version: 1.0
+// Version: 1.1
 
 (function keepItAutoplayFriendly() {
   'use strict';
@@ -10,11 +10,10 @@
   // Only proceed if mobile
   if (!isMobile) return;
 
-  console.log('Mobile Autoplay Helper Initialized.');
+  console.log(`Autoplay Helper started on: ${navigator.userAgent}`);
 
   // Helper function to simulate user interaction
   const simulateInteraction = () => {
-    console.log('Simulating user interaction...');
     document.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
   };
 
@@ -27,7 +26,6 @@
 
         // Trigger just before playback starts
         audio.addEventListener('play', () => {
-          console.log('Audio is about to play. Ensuring interaction...');
           simulateInteraction();
         });
       }
