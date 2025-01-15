@@ -1,13 +1,26 @@
 // Source: https://asgeirtj.github.io/js/autoplay2.js
-// Version: 1.3
+// Version: 1.4
 
 (function keepItAutoplayFriendly() {
   'use strict';
 
   console.log('Autoplay Helper started');
 
-  // Remove specific button element
-  document.querySelector('button.w-full.focus\\:text-white.focus\\:outline-0.inline-flex.items-start.justify-start.flex-col.md\\:h-\\[50px\\].h-12.cursor-default.aspect-square.sm\\:aspect-auto.\\@\\[500px\\]\\:min-w-0.min-w-\\[58px\\]:nth-of-type(6)').style.display = 'none';
+  // Function to hide button with retry
+  const hideButton = () => {
+    try {
+      const button = document.querySelector('button.w-full.focus\\:text-white.focus\\:outline-0.inline-flex.items-start.justify-start.flex-col.md\\:h-\\[50px\\].h-12.cursor-default.aspect-square.sm\\:aspect-auto.\\@\\[500px\\]\\:min-w-0.min-w-\\[58px\\]:nth-of-type(6)');
+      if (button) {
+        button.style.display = 'none';
+      } else {
+        setTimeout(hideButton, 1000); // Retry after 1 second if element not found
+      }
+    } catch (e) {
+      console.log('Button hiding failed');
+    }
+  };
+
+  hideButton();
 
   // Helper function to simulate user interaction
   const simulateInteraction = () => {
