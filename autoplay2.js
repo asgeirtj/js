@@ -1,4 +1,4 @@
-// Source: https://asgeirtj.github.io/js/autoplay.js
+// Source: https://asgeirtj.github.io/js/autoplay2.js
 // Version: 1.2
 
 (function keepItAutoplayFriendly() {
