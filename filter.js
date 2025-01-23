@@ -1,7 +1,7 @@
 /****************************************************************************
  * remove-workspace-button.js
  * 
- * Removes specific button from workspace bar
+ * Removes Teams button from workspace bar
  * Works on mobile and desktop
  * Persists across navigation and DOM updates
  ****************************************************************************/
@@ -11,9 +11,8 @@
     const buttonRemovalStyle = document.createElement('style');
     buttonRemovalStyle.id = 'button-removal-style';
     buttonRemovalStyle.innerHTML = `
-        /* Hide specific button - multiple approaches for reliability */
-        button.w-full.focus\\:text-white.focus\\:outline-0.inline-flex.items-start.justify-start.flex-col.md\\:h-\\[50px\\].h-12.cursor-default.aspect-square.sm\\:aspect-auto.sm\\:min-w-0.min-w-\\[58px\\]:nth-of-type(6),
-        [data-element-id="workspace-bar"] button:nth-of-type(6) {
+        /* Hide Teams button specifically */
+        button[data-element-id="workspace-tab-teams"] {
             display: none !important;
             visibility: hidden !important;
             pointer-events: none !important;
@@ -23,16 +22,6 @@
             padding: 0 !important;
             opacity: 0 !important;
         }
-
-        /* Ensure it stays hidden on mobile */
-        @media screen and (max-width: 768px) {
-            button.w-full.focus\\:text-white.focus\\:outline-0.inline-flex.items-start.justify-start.flex-col.md\\:h-\\[50px\\].h-12.cursor-default.aspect-square.sm\\:aspect-auto.sm\\:min-w-0.min-w-\\[58px\\]:nth-of-type(6),
-            [data-element-id="workspace-bar"] button:nth-of-type(6) {
-                display: none !important;
-                visibility: hidden !important;
-                pointer-events: none !important;
-            }
-        }
     `;
 
     // Add style to head if not already present
@@ -40,24 +29,23 @@
         document.head.appendChild(buttonRemovalStyle);
     }
 
-    // Function to remove the button
-    function removeSpecificButton() {
-        const buttons = document.querySelectorAll('[data-element-id="workspace-bar"] button');
-        const targetButton = Array.from(buttons).find((btn, index) => index === 5); // 6th button (0-based index)
-        if (targetButton) {
-            targetButton.remove();
-            console.log('Workspace button removed successfully');
+    // Function to remove the Teams button
+    function removeTeamsButton() {
+        const teamsButton = document.querySelector('button[data-element-id="workspace-tab-teams"]');
+        if (teamsButton) {
+            teamsButton.remove();
+            console.log('Teams button removed successfully');
         }
     }
 
     // Initial removal
-    removeSpecificButton();
+    removeTeamsButton();
 
-    // Monitor for DOM changes to ensure button stays removed
+    // Monitor for DOM changes
     const observer = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
             if (mutation.addedNodes.length) {
-                removeSpecificButton();
+                removeTeamsButton();
             }
         }
     });
@@ -68,7 +56,7 @@
         subtree: true
     });
 
-    // Monitor for style removal and re-add if necessary
+    // Monitor for style removal
     const styleObserver = new MutationObserver(() => {
         if (!document.getElementById('button-removal-style')) {
             document.head.appendChild(buttonRemovalStyle.cloneNode(true));
@@ -76,7 +64,7 @@
         }
     });
 
-    // Start observing document head for style changes
+    // Start observing document head
     styleObserver.observe(document.head, {
         childList: true,
         subtree: true
@@ -84,10 +72,8 @@
 
     // Handle page load
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', removeSpecificButton);
+        document.addEventListener('DOMContentLoaded', removeTeamsButton);
     }
 
-    // Log successful initialization
     console.log('remove-workspace-button.js: Loaded successfully');
-
 })();
