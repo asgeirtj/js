@@ -1,6 +1,6 @@
 // gpt_style_theme.js
 // TypingMind.com extension
-// GitHub Pages link: https://asgeirtj.github.io/js/deepseek_reasoning.js
+// GitHub Pages link: https://asgeirtj.github.io/js/gpt_style_theme.js
 // Source: https://github.com/shaggy2626/typingmind-themes-extensions/tree/master/themes/gpt_style_theme
 // Source: https://cdn.jsdelivr.net/gh/shaggy2626/typingmind-themes-extensions/themes/gpt_style_theme/gpt_style_theme.js
 // Version: 1.0
