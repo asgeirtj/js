@@ -133,30 +133,7 @@
                             ...data,
                             choices: [{
                               ...data.choices[0],
-                              delta: { 
-                                content: `<div id="${thinkingBlockId}" class="thinking-block" style="
-                                  background-color: #F9F9F9;
-                                  border: 1px solid #ccc;
-                                  border-radius: 0.5rem;
-                                  margin: 8px 0;
-                                ">
-                                <div style="
-                                  padding: 8px;
-                                  cursor: pointer;
-                                  user-select: none;
-                                  display: flex;
-                                  align-items: center;
-                                  border-bottom: 1px solid #ccc;
-                                " onclick="this.parentElement.classList.toggle('expanded')">
-                                  <span style="margin-right: 8px;">💭</span>
-                                  <span>Thinking...</span>
-                                  <span style="margin-left: auto;">▼</span>
-                                </div>
-                                <div style="
-                                  padding: 8px;
-                                  display: none;
-                                ">\n\n> `
-                              }
+                              delta: { content: '▼ 💭 Thinking...\n\n> ' }
                             }]
                           };
                           controller.enqueue(
@@ -194,7 +171,7 @@
                           choices: [{
                             ...data.choices[0],
                             delta: {
-                              content: `\n\n</div></div>\n💡 Thought for ${thinkingDuration} seconds\n\n---\n\n`
+                              content: `\n\n▲ 💡 Thought for ${thinkingDuration} seconds\n\n---\n\n`
                             }
                           }]
                         };
