@@ -1,3 +1,7 @@
+// Source: https://asgeirtj.github.io/js/deepseek-collapsible-reasoning.js
+// Version: 1.0
+// Remember to increment version number when making changes
+
 (function() {
     /**
      * ------------------------------------------------------
