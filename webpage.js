@@ -4,8 +4,8 @@
  */
 
 // ===== CUSTOMIZE HERE =====
-const CUSTOM_BUTTON_NAME = 'Reddit';  // Change this to your desired button name
-const CUSTOM_URL = 'https://www.reddit.com';  // Change this to your desired website URL
+const CUSTOM_BUTTON_NAME = 'Nova';  // Change this to your desired button name
+const CUSTOM_URL = 'https://www.typingmind.com/?agent=a-bfd5cc74-8b4f-4ac6-9218-9c7bf9d305a3';  // Change this to your desired website URL
 // =========================
 
 (function() {
