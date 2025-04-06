@@ -1,46 +1,46 @@
-// TypingMind GPT-Style Theme v4.1 (System Dark Mode)
-// Description: Feature-rich ChatGPT-style theme for TypingMind with system dark mode support, date/time formatting, and thought styling.
-// Origin: Based on shaggy2626's v4 theme, converted to support system dark mode by Ásgeir.
-// Version: 4.1
+// TypingMind GPT-Style Theme v4.2 (Native Dark Mode Colors)
+// Description: Feature-rich ChatGPT-style theme for TypingMind with system dark mode support (using native TM colors), date/time formatting, and thought styling.
+// Origin: Based on shaggy2626's v4 theme, dark mode colors adjusted by Magnanimous Overlord AI based on user preference.
+// Version: 4.2
 
 (function () {
   'use strict';
 
   /**
-   * TypingMind GPT-Style Theme v4.1 (System Dark Mode)
+   * TypingMind GPT-Style Theme v4.2 (Native Dark Mode Colors)
    * Configuration and selector definitions
    */
   const CONFIG = {
-    light: { // Original Light Mode Colors
+    light: { // shaggy2626 v4 Light Mode Colors (Unchanged)
       background: '#F9F9F9',
-      text: '#000000', // Pure black
-      textSecondary: '#555555', // Darker gray for secondary text
+      text: '#000000',
+      textSecondary: '#555555',
       border: '#CCCCCC',
-      borderSubtle: '#E0E0E0', // Lighter border
-      accent: '#E3E3E3', // Accent background (buttons, highlights)
+      borderSubtle: '#E0E0E0',
+      accent: '#E3E3E3', // Used for sidebar hover/selected
       accentText: '#000000',
       input: {
         background: '#F4F4F4',
-        text: '#0D0D0D', // rgb(13, 13, 13)
-        placeholder: '#8E8E8E', // rgb(142, 142, 142)
-        border: '#CCCCCC', // Use main border color for input border consistency
+        text: '#0D0D0D',
+        placeholder: '#8E8E8E',
+        border: '#CCCCCC',
       },
       button: {
-        primary: '#0D0D0D', // rgb(13, 13, 13)
+        primary: '#0D0D0D', // Dark Send/More button background
         primaryText: '#FFFFFF',
         primaryHover: 'rgba(13, 13, 13, 0.8)',
         secondary: 'rgba(0, 0, 0, 0.1)', // Generic hover/secondary button bg
       },
       code: {
-        background: '#f6f8fa', // Light gray for inline code
-        text: '#24292E',      // Dark text for inline code
+        background: '#f6f8fa', // Inline code bg
+        text: '#24292E',      // Inline code text
         blockBackground: '#F9F9F9',
         blockText: '#24292E',
         blockBorder: '#CCCCCC',
       },
       thought: {
-        text: '#00529B', // Darker Blue color for thought sections
-        background: '#BDE5F8', // Light blue background
+        text: '#00529B',
+        background: '#BDE5F8',
       },
       sandbox: {
         background: '#000000',
@@ -63,72 +63,73 @@
           thumb: '#c1c1c1',
           thumbHover: '#a1a1a1',
       },
-      chatAreaBackground: '#FFFFFF', // Explicit white for light chat area
-      userMessageBackground: '#F4F4F4',
-      userMessageText: '#0D0D0D',
-      sidebarTextOverride: '#000000', // Force black text in light sidebar
+      chatAreaBackground: '#FFFFFF',
+      userMessageBackground: '#F4F4F4', // User msg bubble bg
+      userMessageText: '#0D0D0D',     // User msg text
+      sidebarTextOverride: '#000000',   // Force black text in light sidebar
       sidebarHoverBackground: 'rgba(0, 0, 0, 0.1)',
 
     },
-    dark: { // Dark Mode Colors
-      background: '#2D2D2D', // Dark gray main background
-      text: '#EAEAEA', // Off-white text
-      textSecondary: '#AAAAAA', // Lighter gray for secondary text
-      border: '#404040', // Darker border
-      borderSubtle: '#353535', // Very dark subtle border
-      accent: '#3D3D3D', // Darker accent background
+    dark: { // Native TypingMind Dark Mode Colors (Adjusted)
+      background: '#181A1D', // Very dark sidebar background (approximated)
+      text: '#EAEAEA',       // General light text
+      textSecondary: '#AAAAAA', // Dimmer text
+      border: '#404040',       // Subtle border for elements needing it
+      borderSubtle: '#353535',
+      accent: 'rgba(255, 255, 255, 0.2)', // Sidebar selected item background (bg-white/20)
       accentText: '#FFFFFF',
       input: {
-        background: '#2D2D2D', // Dark input background
+        background: '#2D2D2D', // Input area background (slightly lighter than chat bg)
         text: '#FFFFFF',
         placeholder: 'rgba(255, 255, 255, 0.6)',
-        border: '#404040', // Use main dark border color
+        border: '#404040', // Match main border
       },
       button: {
-        primary: '#4A5568', // Grayish-blue primary button
+        primary: '#2563eb', // Native blue send button
         primaryText: '#FFFFFF',
-        primaryHover: '#2D3748', // Darker hover for primary
-        secondary: 'rgba(255, 255, 255, 0.1)', // Generic hover/secondary button bg
+        primaryHover: '#1d4ed8', // Darker blue on hover
+        secondary: 'rgba(255, 255, 255, 0.1)', // Hover for other input buttons
       },
       code: {
-        background: '#1E1E1E', // Very dark background for inline code
-        text: '#D4D4D4',      // Light gray text for inline code
-        blockBackground: '#1E1E1E',
+        background: '#2D2D2D', // Inline code bg (matches input bg)
+        text: '#EAEAEA',      // Inline code text
+        blockBackground: '#1E1E1E', // Darker code block background
         blockText: '#D4D4D4',
         blockBorder: '#404040',
       },
-      thought: {
-        text: '#90CAF9', // Lighter Blue color for thought sections
-        background: '#1E3A5F', // Dark blue background
+      thought: { // Revert thought styling to be less distinct in native dark
+        text: '#AAAAAA', // Use secondary text color
+        background: '#242629', // Slightly different dark background
       },
-      sandbox: {
-        background: '#1E1E1E', // Consistent dark code bg
-        text: '#D4D4D4',     // Consistent dark code text
+      sandbox: { // Match code block style
+        background: '#1E1E1E',
+        text: '#D4D4D4',
       },
-      menu: {
+      menu: { // Dropdown menus
           background: '#2d2d2d',
           text: '#FFFFFF',
       },
-      tagPanel: {
-          background: '#2d2d2d',
+      tagPanel: { // Tag filter panel
+          background: '#181A1D', // Match sidebar
           border: '#404040',
           text: '#FFFFFF',
-          inputBackground: '#1e1e1e',
+          inputBackground: '#2D2D2D', // Match input bg
           inputBorder: '#404040',
           inputText: '#FFFFFF',
       },
-       scrollbar: {
-          track: '#353535',
+      scrollbar: { // Match dark scrollbar appearance
+          track: '#2D2D2D',
           thumb: '#555555',
           thumbHover: '#666666',
       },
-       chatAreaBackground: '#1b1d21', // Specific dark chat area bg
-       userMessageBackground: '#2D2D2D',
-       userMessageText: '#EAEAEA',
-       sidebarTextOverride: '#EAEAEA', // Force light text in dark sidebar
-       sidebarHoverBackground: 'rgba(255, 255, 255, 0.1)',
+       chatAreaBackground: '#1b1d21', // Main chat area background (from HTML)
+       userMessageBackground: '#2D2D2D', // Darker gray user bubble (matches input area)
+       userMessageText: '#EAEAEA',     // Light text in user bubble
+       sidebarTextOverride: '#EAEAEA',   // Force light text in dark sidebar
+       sidebarHoverBackground: 'rgba(255, 255, 255, 0.1)', // Hover for sidebar items
+
     },
-    fonts: {
+    fonts: { // Fonts remain the same as shaggy2626 v4
       primary: 'ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif',
       code: 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace',
       thought: {
@@ -136,7 +137,7 @@
         lineHeight: '20px'
       }
     },
-    spacing: { small: '8px', medium: '1rem', large: '1.5rem' }, // Use px for small spacing consistency
+    spacing: { small: '8px', medium: '1rem', large: '1.5rem' },
     borderRadius: { small: '0.5rem', medium: '1rem', large: '1.5rem' },
     formats: {
       months: { 'Jan': 'January', 'Feb': 'February', 'Mar': 'March', 'Apr': 'April', 'May': 'May', 'Jun': 'June', 'Jul': 'July', 'Aug': 'August', 'Sep': 'September', 'Oct': 'October', 'Nov': 'November', 'Dec': 'December' },
@@ -145,13 +146,14 @@
     }
   };
 
+  // SELECTORS and Utils remain the same as the previous version...
   const SELECTORS = {
-    CODE_BLOCKS: 'pre code', // Includes inline and block code within pre
-    INLINE_CODE: ':not(pre) > code', // Attempt to select only inline code
+    CODE_BLOCKS: 'pre code',
+    INLINE_CODE: ':not(pre) > code',
     RESULT_BLOCKS: 'details pre',
     USER_MESSAGE_BLOCK: 'div[data-element-id="user-message"]',
     CHAT_SPACE: '[data-element-id="chat-space-middle-part"]',
-    THOUGHT_DETAILS: 'details summary:has(span:contains("Thought for"))', // Target summary for check
+    THOUGHT_DETAILS: 'details summary:has(span:contains("Thought for"))',
     TIMESTAMP_BUTTONS: 'button[id^="message-timestamp-"]',
     DATE_SPANS: '[data-element-id="chat-date-info"] span',
     SIDEBAR: {
@@ -165,7 +167,7 @@
       SELECTED_CHAT_ITEM: '[data-element-id="selected-chat-item"]',
       TAG_PANEL: '[data-element-id="tag-search-panel"]',
       TAG_PANEL_INPUT: '[data-element-id="tag-search-panel"] input[type="search"]',
-      TEXTAREA: 'textarea', // General selector for textareas in sidebar context
+      TEXTAREA: 'textarea',
       PROFILE_BUTTON: '[data-element-id="workspace-profile-button"]'
     },
     CHAT_AREA: {
@@ -175,7 +177,7 @@
         USER_MESSAGE_DIV: '[data-element-id="user-message"] > div',
         PROSE_ROOT: '.prose.max-w-full',
         CODE_BLOCK_WRAPPER: 'pre:has(div.relative)',
-        SANDBOX_PRE: 'pre.mb-2.overflow-auto.text-sm.border.border-gray-200.rounded.bg-gray-100', // Selector for sandbox pre blocks
+        SANDBOX_PRE: 'pre.mb-2.overflow-auto.text-sm.border.border-gray-200.rounded.bg-gray-100',
         CODE_BLOCK_STICKY_HEADER: 'pre > div.relative > div.sticky',
         CODE_BLOCK_INNER_PRE: 'pre > div.relative > div > pre',
         LIST: '.prose.max-w-full ul, .prose.max-w-full ol',
@@ -277,7 +279,7 @@
 
           @media (prefers-color-scheme: dark) {
               :root {
-                  /* Dark Mode Variables */
+                  /* Dark Mode Variables (Native TM Look) */
                   --tm-bg: ${CONFIG.dark.background};
                   --tm-text: ${CONFIG.dark.text};
                   --tm-text-secondary: ${CONFIG.dark.textSecondary};
@@ -289,7 +291,7 @@
                   --tm-input-text: ${CONFIG.dark.input.text};
                   --tm-input-placeholder: ${CONFIG.dark.input.placeholder};
                   --tm-input-border: ${CONFIG.dark.input.border};
-                  --tm-button-primary-bg: ${CONFIG.dark.button.primary};
+                  --tm-button-primary-bg: ${CONFIG.dark.button.primary}; /* Blue send button */
                   --tm-button-primary-text: ${CONFIG.dark.button.primaryText};
                   --tm-button-primary-hover-bg: ${CONFIG.dark.button.primaryHover};
                   --tm-button-secondary-hover-bg: ${CONFIG.dark.button.secondary};
@@ -298,8 +300,8 @@
                   --tm-code-block-bg: ${CONFIG.dark.code.blockBackground};
                   --tm-code-block-text: ${CONFIG.dark.code.blockText};
                   --tm-code-block-border: ${CONFIG.dark.code.blockBorder};
-                  --tm-thought-text: ${CONFIG.dark.thought.text};
-                  --tm-thought-bg: ${CONFIG.dark.thought.background};
+                  --tm-thought-text: ${CONFIG.dark.thought.text}; /* Subtle thought text */
+                  --tm-thought-bg: ${CONFIG.dark.thought.background};   /* Subtle thought background */
                   --tm-sandbox-bg: ${CONFIG.dark.sandbox.background};
                   --tm-sandbox-text: ${CONFIG.dark.sandbox.text};
                   --tm-menu-bg: ${CONFIG.dark.menu.background};
@@ -341,13 +343,33 @@
       ${SELECTORS.SIDEBAR.BEGINNING},
       ${SELECTORS.SIDEBAR.MIDDLE} { background-color: var(--tm-bg) !important; }
 
-      /* New chat button */
-      ${SELECTORS.SIDEBAR.NEW_CHAT} { background-color: var(--tm-accent-bg) !important; color: var(--tm-accent-text) !important; }
-      ${SELECTORS.SIDEBAR.NEW_CHAT} * { color: var(--tm-accent-text) !important; }
+      /* New chat button - Keep consistent look or use native blue in dark? */
+      /* Option 1: Keep Theme's Look (light/dark accent) */
+      /* ${SELECTORS.SIDEBAR.NEW_CHAT} { background-color: var(--tm-accent-bg) !important; color: var(--tm-accent-text) !important; } */
+      /* ${SELECTORS.SIDEBAR.NEW_CHAT} * { color: var(--tm-accent-text) !important; } */
+
+       /* Option 2: Use Native Blue in Dark Mode (Like Default) */
+        ${SELECTORS.SIDEBAR.NEW_CHAT} {
+            background-color: var(--tm-accent-bg) !important; /* Light mode accent */
+            color: var(--tm-accent-text) !important; /* Light mode text */
+         }
+         ${SELECTORS.SIDEBAR.NEW_CHAT} * {
+            color: var(--tm-accent-text) !important; /* Light mode text */
+         }
+        @media (prefers-color-scheme: dark) {
+             ${SELECTORS.SIDEBAR.NEW_CHAT} {
+                 background-color: ${CONFIG.dark.button.primary} !important; /* Use native blue */
+                 color: ${CONFIG.dark.button.primaryText} !important;
+             }
+             ${SELECTORS.SIDEBAR.NEW_CHAT} * {
+                 color: ${CONFIG.dark.button.primaryText} !important;
+             }
+        }
+
 
       /* Search bar */
       ${SELECTORS.SIDEBAR.SEARCH} {
-         background-color: var(--tm-menu-bg) !important; /* Use menu bg for contrast */
+         background-color: var(--tm-input-bg) !important; /* Use input background for contrast */
          color: var(--tm-text) !important;
          border: 1px solid var(--tm-border) !important;
       }
@@ -370,10 +392,10 @@
       { color: var(--tm-sidebar-text-override) !important; opacity: 1 !important; --tw-text-opacity: 1 !important; }
 
       /* Chat item styling */
-      ${SELECTORS.SIDEBAR.CHAT_ITEM}:hover,
-      ${SELECTORS.SIDEBAR.SELECTED_CHAT_ITEM} { background-color: var(--tm-accent-bg) !important; }
+      ${SELECTORS.SIDEBAR.CHAT_ITEM}:hover { background-color: var(--tm-sidebar-hover-bg) !important; } /* Use specific hover variable */
+      ${SELECTORS.SIDEBAR.SELECTED_CHAT_ITEM} { background-color: var(--tm-accent-bg) !important; } /* Use accent for selected */
 
-      /* Chat item buttons (hide by default, show on hover) */
+      /* Chat item buttons (hide by default, show on hover) - Behavior remains */
       ${SELECTORS.SIDEBAR.CHAT_ITEM} button[aria-label="Delete Chat"],
       ${SELECTORS.SIDEBAR.CHAT_ITEM} button[aria-label="Favorite Chat"],
       ${SELECTORS.SIDEBAR.CHAT_ITEM} button[aria-label="Chat settings"],
@@ -394,7 +416,8 @@
       ${SELECTORS.HEADLESS_UI_PORTAL} { display: block !important; visibility: visible !important; pointer-events: auto !important; }
       ${SELECTORS.HEADLESS_UI_PORTAL} ${SELECTORS.MENU} { display: block !important; visibility: visible !important; background-color: var(--tm-menu-bg) !important; color: var(--tm-menu-text) !important; pointer-events: auto !important; border: 1px solid var(--tm-border) !important; border-radius: 0.5rem; }
       ${SELECTORS.HEADLESS_UI_PORTAL} ${SELECTORS.MENU_ITEM} { display: flex !important; visibility: visible !important; pointer-events: auto !important; color: var(--tm-menu-text) !important; }
-      ${SELECTORS.HEADLESS_UI_PORTAL} ${SELECTORS.MENU_ITEM}:hover { background-color: var(--tm-accent-bg) !important; }
+       /* Explicit hover for menu items using appropriate hover color */
+      ${SELECTORS.HEADLESS_UI_PORTAL} ${SELECTORS.MENU_ITEM}:hover { background-color: var(--tm-sidebar-hover-bg) !important; }
 
 
       /* Tag search panel */
@@ -409,11 +432,13 @@
          background-color: var(--tm-menu-bg) !important; /* Use menu bg */
          position: relative !important; cursor: pointer !important;
       }
-      ${SELECTORS.SIDEBAR.TAG_PANEL} input[type="checkbox"]:checked { background-color: #2563eb !important; border-color: #2563eb !important; }
+       /* Use primary button color for checked state for consistency */
+      ${SELECTORS.SIDEBAR.TAG_PANEL} input[type="checkbox"]:checked { background-color: var(--tm-button-primary-bg) !important; border-color: var(--tm-button-primary-bg) !important; }
       ${SELECTORS.SIDEBAR.TAG_PANEL} input[type="checkbox"]:checked::after {
          content: '' !important; position: absolute !important;
          left: 5px !important; top: 2px !important; width: 4px !important; height: 8px !important;
-         border: solid white !important; border-width: 0 2px 2px 0 !important; transform: rotate(45deg) !important;
+         border: solid var(--tm-button-primary-text) !important; /* Use button text color for checkmark */
+         border-width: 0 2px 2px 0 !important; transform: rotate(45deg) !important;
       }
       /* Text colors for tag panel */
       ${SELECTORS.SIDEBAR.TAG_PANEL} label, ${SELECTORS.SIDEBAR.TAG_PANEL} p,
@@ -477,11 +502,11 @@
         /* Base Font Styling */
         ${SELECTORS.CHAT_AREA.PROSE_TEXT},
         ${SELECTORS.CHAT_AREA.USER_MESSAGE_DIV} {
-            font-family: ${CONFIG.fonts.primary}; font-size: 14px !important; line-height: 28px !important; color: var(--tm-text) !important;
+            font-family: ${CONFIG.fonts.primary} !important; font-size: 14px !important; line-height: 28px !important; color: var(--tm-text) !important;
         }
         ${SELECTORS.CHAT_AREA.PROSE_ROOT},
         ${SELECTORS.USER_MESSAGE_BLOCK} {
-            font-family: ${CONFIG.fonts.primary}; font-size: 14px !important; line-height: 28px !important; color: var(--tm-text) !important;
+            font-family: ${CONFIG.fonts.primary} !important; font-size: 14px !important; line-height: 28px !important; color: var(--tm-text) !important;
         }
         /* Reset excluded elements */
         ${SELECTORS.CHAT_SPACE} .text-xs.text-gray-500.truncate,
@@ -491,15 +516,15 @@
         }
 
         /* User Message Layout & Styling */
-        ${SELECTORS.CHAT_AREA.AVATAR_CONTAINER_USER} { display: none !important; }
+        ${SELECTORS.CHAT_AREA.AVATAR_CONTAINER_USER} { display: none !important; } /* Hide user avatar */
         ${SELECTORS.USER_MESSAGE_BLOCK} {
-            margin-left: auto !important; margin-right: 0 !important; display: block !important; max-width: 70% !important;
+            margin-left: auto !important; margin-right: 0 !important; display: block !important; max-width: 70% !important; /* Right align */
             border-radius: ${CONFIG.borderRadius.large} !important; background-color: var(--tm-user-msg-bg) !important;
             color: var(--tm-user-msg-text) !important; padding: ${CONFIG.spacing.small} !important; margin-bottom: ${CONFIG.spacing.small} !important;
         }
-         /* Ensure inner div text color matches */
+         /* Ensure inner div text color matches and background is transparent */
         ${SELECTORS.CHAT_AREA.USER_MESSAGE_DIV} {
-             background-color: transparent !important; /* Make inner div transparent */
+             background-color: transparent !important;
              color: var(--tm-user-msg-text) !important;
         }
 
@@ -507,31 +532,39 @@
         /* Code Blocks */
         ${SELECTORS.CHAT_AREA.CODE_BLOCK_WRAPPER} {
             background-color: var(--tm-code-block-bg) !important; border: 1px solid var(--tm-code-block-border) !important; border-radius: ${CONFIG.borderRadius.small} !important;
+            margin-top: ${CONFIG.spacing.small} !important; margin-bottom: ${CONFIG.spacing.small} !important; /* Add margins */
         }
-         /* Ensure inner code elements use correct text color */
+         /* Ensure inner code elements use correct text color and font */
         ${SELECTORS.CHAT_AREA.CODE_BLOCK_WRAPPER} code {
              color: var(--tm-code-block-text) !important;
-             background-color: transparent !important; /* Ensure no extra background */
-             font-family: ${CONFIG.fonts.code} !important; /* Ensure code font */
+             background-color: transparent !important;
+             font-family: ${CONFIG.fonts.code} !important;
         }
         ${SELECTORS.CHAT_AREA.CODE_BLOCK_STICKY_HEADER} {
             position: sticky !important; top: 0 !important; z-index: 10 !important; background-color: var(--tm-code-block-bg) !important;
             border-radius: ${CONFIG.borderRadius.small} ${CONFIG.borderRadius.small} 0 0 !important; border-bottom: 1px solid var(--tm-code-block-border) !important;
+            padding: 4px 8px !important; /* Add padding to header */
         }
          /* Ensure inner pre has no border/bg and correct padding */
          ${SELECTORS.CHAT_AREA.CODE_BLOCK_INNER_PRE} {
-            border: none !important; background: transparent !important; margin: 0 !important; padding: ${CONFIG.spacing.small} !important; /* Add padding here */
+            border: none !important; background: transparent !important; margin: 0 !important; padding: ${CONFIG.spacing.small} !important;
          }
 
          /* Inline Code Styling */
-         ${SELECTORS.INLINE_CODE} {
+         ${SELECTORS.INLINE_CODE} { /* Target only inline code */
              background-color: var(--tm-code-inline-bg) !important;
              color: var(--tm-code-inline-text) !important;
              padding: 0.2em 0.4em !important;
+             margin: 0 0.2em; /* Add slight margin */
              border-radius: 3px !important;
              font-family: ${CONFIG.fonts.code} !important;
              font-size: 90% !important;
-             border: 1px solid var(--tm-border-subtle) !important; /* Add subtle border */
+             border: 1px solid var(--tm-border-subtle) !important;
+             word-break: break-all; /* Allow breaking long inline code */
+         }
+         /* Ensure inline code within user messages also gets styled */
+         ${SELECTORS.USER_MESSAGE_BLOCK} ${SELECTORS.INLINE_CODE} {
+              color: var(--tm-code-inline-text) !important; /* May need different color than user msg text */
          }
 
 
@@ -544,67 +577,65 @@
 
         /* General Chat Area */
         ${SELECTORS.CHAT_SPACE} { background-color: var(--tm-chat-bg) !important; }
-        ${SELECTORS.CHAT_AREA.RESPONSE_BLOCK}:hover { background-color: transparent !important; }
+        ${SELECTORS.CHAT_AREA.RESPONSE_BLOCK}:hover { background-color: transparent !important; } /* Remove hover bg */
 
         /* Lists */
         ${SELECTORS.CHAT_AREA.LIST} { margin: ${CONFIG.spacing.small} 0 !important; }
         ${SELECTORS.CHAT_AREA.LIST_ITEM} { margin: 0.3rem 0 !important; }
         ${SELECTORS.CHAT_AREA.LIST_ITEM}::marker { color: var(--tm-text) !important; font-weight: bold !important; }
-        ${SELECTORS.CHAT_AREA.UL_ITEM} { list-style-type: disc !important; padding-left: ${CONFIG.spacing.medium} !important; } /* Slightly more padding for lists */
+        ${SELECTORS.CHAT_AREA.UL_ITEM} { list-style-type: disc !important; padding-left: ${CONFIG.spacing.medium} !important; }
         ${SELECTORS.CHAT_AREA.OL_ITEM} { list-style-type: decimal !important; padding-left: ${CONFIG.spacing.medium} !important; }
 
         /* Headers */
-        ${SELECTORS.CHAT_AREA.H1} { font-size: 2em !important; line-height: 1.3 !important; margin: 0.5em 0 !important; border-bottom: 1px solid var(--tm-border-subtle); padding-bottom: 0.3em; }
-        ${SELECTORS.CHAT_AREA.H2} { font-size: 1.5em !important; line-height: 1.3 !important; margin: 0.5em 0 !important; border-bottom: 1px solid var(--tm-border-subtle); padding-bottom: 0.3em; }
-        ${SELECTORS.CHAT_AREA.H3} { font-size: 1.25em !important; line-height: 1.3 !important; margin: 0.5em 0 !important; }
+        ${SELECTORS.CHAT_AREA.H1} { font-size: 2em !important; line-height: 1.3 !important; margin: 0.5em 0 !important; border-bottom: 1px solid var(--tm-border-subtle); padding-bottom: 0.3em; color: var(--tm-text) !important; }
+        ${SELECTORS.CHAT_AREA.H2} { font-size: 1.5em !important; line-height: 1.3 !important; margin: 0.5em 0 !important; border-bottom: 1px solid var(--tm-border-subtle); padding-bottom: 0.3em; color: var(--tm-text) !important; }
+        ${SELECTORS.CHAT_AREA.H3} { font-size: 1.25em !important; line-height: 1.3 !important; margin: 0.5em 0 !important; color: var(--tm-text) !important; }
 
-        /* Thought section styling */
-        details[open] summary:has(span:contains('Thought for')) + div,
-        details.text-slate-900 summary:has(span:contains('Thought for')) + div, /* Original selector for safety */
-        details[open] summary:has(span:contains('Thought for')) ~ div:not(summary), /* Target following divs */
-        details[open] div.border-l-2 { /* Target the div directly too */
+        /* Thought section styling - Rely on classes added by JS */
+        .tm-thought-content {
             color: var(--tm-thought-text) !important;
             background-color: var(--tm-thought-bg) !important;
-            padding: ${CONFIG.spacing.small} ${CONFIG.spacing.medium} !important; /* More padding */
-            border-left: 3px solid var(--tm-thought-text) !important; /* Thicker border */
-            margin-left: 0 !important; /* Override default margin */
+            padding: ${CONFIG.spacing.small} ${CONFIG.spacing.medium} !important;
+            border-left: 3px solid var(--tm-thought-text) !important;
+            margin-left: 0 !important;
             margin-top: ${CONFIG.spacing.small} !important;
             border-radius: ${CONFIG.borderRadius.small} !important;
-            font-style: italic !important; /* Apply italic to container */
+            font-style: normal !important; /* Remove italics from container */
         }
-         /* Style text elements inside thoughts, excluding code */
-        details:has(summary span:contains('Thought for')) div *:not(code):not(pre):not(summary) {
+         /* Style text elements inside thoughts */
+        .tm-thought-content *:not(code):not(pre):not(summary) {
             color: var(--tm-thought-text) !important;
             font-size: ${CONFIG.fonts.thought.size} !important;
             line-height: ${CONFIG.fonts.thought.lineHeight} !important;
-            font-style: italic !important;
-            background-color: transparent !important; /* Prevent background inheritance */
+            font-style: normal !important; /* Use normal style in native dark */
+            background-color: transparent !important;
         }
-         /* Ensure code inside thoughts retains code styling */
-         details:has(summary span:contains('Thought for')) code {
-             /* Inherit code styles or define specifically */
-             font-style: normal !important;
-             font-size: inherit !important; /* Or specific code size */
-             line-height: inherit !important;
-             background-color: var(--tm-code-inline-bg) !important; /* Use inline code style */
-             color: var(--tm-code-inline-text) !important;
-             padding: 0.1em 0.3em !important;
-             border-radius: 3px !important;
-         }
          /* Style the summary toggle itself */
-         ${SELECTORS.THOUGHT_DETAILS} summary {
+         .tm-thought-summary {
               color: var(--tm-text-secondary) !important;
-              font-style: italic !important;
+              font-style: normal !important; /* No italics for native dark */
               cursor: pointer;
               padding: 2px 4px;
               border-radius: 3px;
-              display: inline-block; /* Prevent full width */
+              display: inline-block;
+              margin-bottom: 2px; /* Add space below summary when open */
          }
-         ${SELECTORS.THOUGHT_DETAILS} summary:hover {
+         .tm-thought-summary:hover {
              background-color: var(--tm-accent-bg);
          }
-         details[open] > summary:has(span:contains('Thought for')) {
+         details[open] > .tm-thought-summary {
               margin-bottom: ${CONFIG.spacing.small} !important;
+         }
+          /* Code inside thoughts - inherit inline style */
+         .tm-thought-content code {
+             font-style: normal !important;
+             font-size: 90% !important; /* Match inline code */
+             line-height: inherit !important;
+             background-color: var(--tm-code-inline-bg) !important;
+             color: var(--tm-code-inline-text) !important;
+             padding: 0.1em 0.3em !important;
+             border-radius: 3px !important;
+             border: 1px solid var(--tm-border-subtle) !important;
          }
       `;
       document.head.appendChild(mainStyle);
@@ -618,24 +649,24 @@
       inputStyle.textContent = `
         ${SELECTORS.CHAT_AREA.INPUT_CONTAINER} {
             background-color: var(--tm-input-bg) !important;
-            border-radius: ${CONFIG.borderRadius.large} !important;
+            border-radius: ${CONFIG.borderRadius.medium} !important; /* Less rounded like native */
             margin-bottom: ${CONFIG.spacing.medium} !important;
-            border: 1px solid var(--tm-border) !important; /* Add border */
-            padding: 2px; /* Add slight padding around inner elements */
+            border: 1px solid var(--tm-border) !important;
+            padding: 2px;
         }
         ${SELECTORS.CHAT_AREA.INPUT_TEXTBOX} {
             font-family: ${CONFIG.fonts.primary} !important;
             font-size: 16px !important; line-height: 24px !important; min-height: 44px !important;
-            padding: 0.75rem 1rem !important; /* Standard padding */
-            border-radius: ${CONFIG.borderRadius.large} !important; /* Match container */
+            padding: 0.75rem 1rem !important;
+            border-radius: ${CONFIG.borderRadius.medium} !important; /* Match container */
             color: var(--tm-input-text) !important;
-            background-color: transparent !important; /* Make textarea bg transparent */
-            border: none !important; /* Remove inner border */
+            background-color: transparent !important;
+            border: none !important;
             outline: none !important;
-            margin: 0 !important; /* Remove default margins */
-            /* Adjust margin within the input-row instead if needed */
-             padding-top: ${CONFIG.spacing.small} !important; /* Add padding top/bottom */
-             padding-bottom: ${CONFIG.spacing.small} !important;
+            margin: 0 !important;
+            padding-top: ${CONFIG.spacing.small} !important;
+            padding-bottom: ${CONFIG.spacing.small} !important;
+            padding-right: 55px !important; /* Increased padding for Send button */
             overflow-wrap: break-word !important; tab-size: 4 !important; text-size-adjust: 100% !important;
             white-space: pre-wrap !important; font-variant-ligatures: none !important; -webkit-tap-highlight-color: transparent !important;
         }
@@ -643,50 +674,71 @@
 
         /* Action buttons styling (excluding send, more-options, replace-only) */
         ${SELECTORS.CHAT_AREA.INPUT_ACTION_BUTTONS} {
-            transition: all 0.2s ease !important; color: var(--tm-text-secondary) !important; /* Use secondary text color */
+            transition: all 0.2s ease !important; color: var(--tm-text-secondary) !important; /* Dimmer icons like native */
         }
         ${SELECTORS.CHAT_AREA.INPUT_ACTION_BUTTONS} svg {
             width: 20px !important; height: 20px !important; vertical-align: middle !important;
         }
         ${SELECTORS.CHAT_AREA.INPUT_ACTION_BUTTONS}:hover {
             background-color: var(--tm-button-secondary-hover-bg) !important;
-            color: var(--tm-text) !important; /* Darken text on hover */
+            color: var(--tm-text) !important;
             border-radius: ${CONFIG.borderRadius.small} !important;
         }
-        ${SELECTORS.CHAT_AREA.INPUT_ACTIONS} { padding: ${CONFIG.spacing.small} 0.75rem !important; border-top: 1px solid var(--tm-border-subtle); margin-top: ${CONFIG.spacing.small}; } /* Add border top */
+         /* Remove top border for native look */
+        ${SELECTORS.CHAT_AREA.INPUT_ACTIONS} { padding: ${CONFIG.spacing.small} 0.75rem !important; border-top: none; margin-top: 0; }
 
-        /* Send and More Options buttons */
-        ${SELECTORS.CHAT_AREA.SEND_BUTTON},
-        ${SELECTORS.CHAT_AREA.MORE_OPTIONS_BUTTON} {
+        /* Send button (Native Blue in Dark Mode) */
+        ${SELECTORS.CHAT_AREA.SEND_BUTTON} {
             background-color: var(--tm-button-primary-bg) !important;
-            border-color: transparent !important; /* Remove border */
+            border-color: transparent !important;
             color: var(--tm-button-primary-text) !important;
-            border-radius: ${CONFIG.borderRadius.medium} !important; /* Slightly less round than container */
-            height: 36px !important; /* Standard height */
-            padding: 0 ${CONFIG.spacing.medium} !important;
+            border-radius: ${CONFIG.borderRadius.medium} !important;
+            height: 36px !important;
+            min-width: 44px; /* Ensure minimum width */
+            padding: 0 12px !important;
+            position: absolute !important;
+            right: 10px !important;
+            bottom: 10px !important;
+            box-shadow: none !important; /* Remove potential theme shadows */
         }
-        ${SELECTORS.CHAT_AREA.SEND_BUTTON}:hover,
-        ${SELECTORS.CHAT_AREA.MORE_OPTIONS_BUTTON}:hover {
+        ${SELECTORS.CHAT_AREA.SEND_BUTTON}:hover {
             background-color: var(--tm-button-primary-hover-bg) !important;
             border-color: transparent !important;
         }
 
-         /* Position send button slightly better */
-         ${SELECTORS.CHAT_AREA.SEND_BUTTON} {
-              position: absolute;
-              right: 10px; /* Adjust as needed */
-              bottom: 10px; /* Adjust as needed */
+        /* More Options button - make it look like other action buttons */
+         ${SELECTORS.CHAT_AREA.MORE_OPTIONS_BUTTON} {
+             background-color: transparent !important;
+             border-color: transparent !important;
+             color: var(--tm-text-secondary) !important;
+             transition: all 0.2s ease !important;
+             box-shadow: none !important;
+             padding: 0 !important; /* Reset padding */
+             width: 36px !important; /* Match other action buttons size */
+             height: 36px !important;
          }
-         /* Adjust textarea padding to avoid send button overlap */
-          ${SELECTORS.CHAT_AREA.INPUT_TEXTBOX} {
-               padding-right: 50px !important; /* Space for the send button */
-          }
+         ${SELECTORS.CHAT_AREA.MORE_OPTIONS_BUTTON}:hover {
+             background-color: var(--tm-button-secondary-hover-bg) !important;
+             color: var(--tm-text) !important;
+             border-radius: ${CONFIG.borderRadius.small} !important;
+         }
+         ${SELECTORS.CHAT_AREA.MORE_OPTIONS_BUTTON} svg { /* Ensure icon size matches */
+             width: 20px !important; height: 20px !important;
+         }
+
+         /* Adjust layout for better button alignment */
+         ${SELECTORS.CHAT_AREA.INPUT_ACTIONS} > div:last-child { /* Target right-side button container */
+              position: absolute;
+              right: 58px; /* Position it next to Send button */
+              bottom: 10px;
+              gap: 4px !important; /* Reduce gap */
+         }
       `;
       document.head.appendChild(inputStyle);
   }
 
-  /* ---------------- Text Parsing & Formatting ---------------- */
-  const multiStepParse = txt =>
+  // Text Parsing & Formatting functions (multiStepParse, processMessageContent, styleUserMessageEl, handleJsonCodeBlock, styleSandboxOutputs) remain the same as v4.1...
+   const multiStepParse = txt =>
       Utils.safe(() => {
           let res = txt;
           // Triple backticks with optional language
@@ -736,8 +788,8 @@
           const raw = msgEl.textContent || '';
            // Only process if there are special chars OR <test> tag might exist
           if (!/[<`']/.test(raw) && !raw.includes('<test>')) {
-               // Apply basic styling even if no parsing needed
-               msgEl.style.fontFamily = CONFIG.fonts.primary;
+               // Apply basic styling even if no parsing needed (font applied by CSS)
+               // msgEl.style.fontFamily = CONFIG.fonts.primary; // Handled by CSS
                return;
           }
 
@@ -749,11 +801,7 @@
           if (!targetContainer) {
               msgEl.innerHTML = ''; // Clear existing potentially incorrect structure
               targetContainer = document.createElement('div');
-              // Ensure container gets base text styles if it's newly created
-              targetContainer.style.fontFamily = CONFIG.fonts.primary;
-              targetContainer.style.fontSize = '14px';
-              targetContainer.style.lineHeight = '28px';
-              targetContainer.style.color = 'var(--tm-user-msg-text)';
+              // Basic styles inherited via CSS, no need to set inline here usually
               msgEl.appendChild(targetContainer);
           }
 
@@ -828,14 +876,12 @@
 
 
   /* ---------------- Thought Section Styling ---------------- */
-    // CSS rules are now in applyMainStyles, this function focuses on dynamic elements if needed
+    // JS part just adds classes/attributes for CSS targeting
     function styleThoughtSections() {
       Utils.safe(() => {
         document.querySelectorAll('details:has(summary span:contains("Thought for"))').forEach(details => {
            if (details.hasAttribute('data-thought-styled')) return; // Skip if already processed
 
-            // Ensure the main content div gets the styles applied via CSS rules in applyMainStyles
-            // We might need to add a class for more reliable CSS targeting
             const contentDiv = details.querySelector('div:not(summary)');
             if (contentDiv) {
                 contentDiv.classList.add('tm-thought-content'); // Add class for CSS
@@ -852,6 +898,7 @@
 
 
   /* ---------------- Date and Time Formatting ---------------- */
+  // DateTimeFormatters, formatTimestamps, reformatDateDisplays remain the same as v4.1...
   const DateTimeFormatters = {
       convertTo12HourFormat: (timeStr) => {
           return Utils.safe(() => {
@@ -954,39 +1001,34 @@
 
               // Process code blocks (incl JSON)
               document.querySelectorAll(SELECTORS.CODE_BLOCKS).forEach(code => {
-                  if (!code.closest('.editing') && !code.closest(SELECTORS.RESULT_BLOCKS)) { // Avoid double-processing sandbox code if it uses <code>
+                  if (!code.closest('.editing') && !code.closest(SELECTORS.RESULT_BLOCKS)) {
                        handleJsonCodeBlock(code);
                   }
               });
 
               // Style only inline code blocks (outside pre)
               document.querySelectorAll(SELECTORS.INLINE_CODE).forEach(inlineCode => {
-                  // Check it's not already handled by multiStepParse or inside a pre/thought block
-                  if (!inlineCode.closest('pre') && !inlineCode.closest('details:has(summary span:contains("Thought for"))') && !inlineCode.hasAttribute('data-styled')) {
-                      inlineCode.style.backgroundColor = 'var(--tm-code-inline-bg)';
-                      inlineCode.style.color = 'var(--tm-code-inline-text)';
-                      inlineCode.style.padding = '0.2em 0.4em';
-                      inlineCode.style.borderRadius = '3px';
-                      inlineCode.style.fontFamily = CONFIG.fonts.code;
-                      inlineCode.style.fontSize = '90%';
-                      inlineCode.style.border = '1px solid var(--tm-border-subtle)';
-                      inlineCode.setAttribute('data-styled', 'true');
+                  if (!inlineCode.closest('pre') && !inlineCode.closest('.tm-thought-content') && !inlineCode.hasAttribute('data-styled')) {
+                       // Style using CSS variables defined in applyMainStyles
+                       inlineCode.classList.add('inline-code'); // Add class if needed by CSS
+                       // Inline styles are less preferred now if CSS handles it
+                       inlineCode.setAttribute('data-styled', 'true');
                   }
               });
 
               // Apply other display enhancements
-              styleSandboxOutputs(); // Styles specific <pre> blocks in <details>
-              styleThoughtSections(); // Adds classes/attributes to thought sections for CSS
+              styleSandboxOutputs();
+              styleThoughtSections();
               formatTimestamps();
               reformatDateDisplays();
           }, 'improveTextDisplay'),
-      150 // Slightly increased debounce
+      150 // Debounce time
   );
 
   /* ---------------- Initialization ---------------- */
   function initTheme() {
-    console.log('TypingMind GPT-Style Theme v4.1 (Dark Mode): Initializing...');
-    injectCssVariables(); // Inject variables first
+    console.log('TypingMind GPT-Style Theme v4.2 (Native Dark): Initializing...');
+    injectCssVariables();
     applySidebarStyles();
     fixSearchPlaceholder();
     applyMainStyles();
@@ -995,74 +1037,62 @@
     const observeDomChanges = () => {
       Utils.safe(() => {
         const observer = new MutationObserver(mutations => {
-          // More robust check: Check if relevant nodes were added/changed
-          // Optimize: Check only necessary mutation types and targets
           let needsUpdate = false;
           for (const mutation of mutations) {
               if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                  // Check if added nodes contain elements we care about
                    for (const node of mutation.addedNodes) {
-                       if (node.nodeType === 1) { // ELEMENT_NODE
-                           if (node.matches || node.querySelector) { // Check if node supports matches/querySelector
-                                if (node.matches(SELECTORS.USER_MESSAGE_BLOCK) ||
-                                    node.querySelector(SELECTORS.USER_MESSAGE_BLOCK) ||
-                                    node.matches(SELECTORS.CHAT_SPACE) || // Chat space itself added
-                                    node.querySelector(SELECTORS.CHAT_SPACE) ||
-                                    node.matches(SELECTORS.SIDEBAR.MIDDLE) || // Sidebar content added
-                                    node.querySelector(SELECTORS.SIDEBAR.MIDDLE) ||
-                                    node.matches('pre') || node.querySelector('pre') || // Any code block added
-                                    node.matches('details') || node.querySelector('details') || // Any details added
+                       if (node.nodeType === 1) {
+                           if (node.matches || node.querySelector) {
+                                if (node.matches(SELECTORS.USER_MESSAGE_BLOCK) || node.querySelector(SELECTORS.USER_MESSAGE_BLOCK) ||
+                                    node.matches(SELECTORS.CHAT_SPACE) || node.querySelector(SELECTORS.CHAT_SPACE) ||
+                                    node.matches(SELECTORS.SIDEBAR.MIDDLE) || node.querySelector(SELECTORS.SIDEBAR.MIDDLE) ||
+                                    node.matches('pre') || node.querySelector('pre') ||
+                                    node.matches('details') || node.querySelector('details') ||
                                     node.matches(SELECTORS.TIMESTAMP_BUTTONS) || node.querySelector(SELECTORS.TIMESTAMP_BUTTONS) ||
-                                    node.matches(SELECTORS.DATE_SPANS) || node.querySelector(SELECTORS.DATE_SPANS)
-                                    ) {
-                                    needsUpdate = true;
-                                    break;
+                                    node.matches(SELECTORS.DATE_SPANS) || node.querySelector(SELECTORS.DATE_SPANS)) {
+                                    needsUpdate = true; break;
                                 }
                            }
                        }
                    }
               } else if (mutation.type === 'characterData' && mutation.target.parentNode?.closest(SELECTORS.CHAT_SPACE)) {
-                   // Update if text content changes within the chat space (might affect parsing)
                    needsUpdate = true;
               } else if (mutation.type === 'attributes' && (mutation.attributeName === 'class' || mutation.attributeName === 'style')) {
-                   // Update if class/style attributes change, might affect layout/visibility
-                   needsUpdate = true;
+                   // Check if the target is relevant before triggering update
+                   if (mutation.target.closest(SELECTORS.CHAT_SPACE) || mutation.target.closest(SELECTORS.SIDEBAR.BACKGROUND)) {
+                       needsUpdate = true;
+                   }
               }
               if (needsUpdate) break;
           }
 
-
           if (needsUpdate) {
-            improveTextDisplay(); // Use debounced function
+            improveTextDisplay();
           }
         });
 
         observer.observe(document.body, {
-          childList: true,
-          subtree: true,
-          attributes: true, // Observe attributes
-          characterData: true, // Observe text changes
-          attributeFilter: ['style', 'class', 'id', 'data-processed'] // More specific attribute filter
+          childList: true, subtree: true, attributes: true, characterData: true,
+          attributeFilter: ['style', 'class', 'id', 'data-processed']
         });
         console.log('TypingMind Theme: MutationObserver started.');
       }, 'observeDomChanges');
     };
 
-    // Run initial styling and start observing
     if (document.readyState === 'loading') {
        console.log('TypingMind Theme: DOM not ready, adding listener.');
        document.addEventListener('DOMContentLoaded', () => {
             console.log('TypingMind Theme: DOMContentLoaded fired.');
-            improveTextDisplay(); // Run initial processing
+            improveTextDisplay();
             observeDomChanges();
        });
     } else {
        console.log('TypingMind Theme: DOM already ready, running now.');
-       improveTextDisplay(); // Run initial processing
+       improveTextDisplay();
        observeDomChanges();
     }
 
-    console.log('TypingMind GPT-Style Theme v4.1 (Dark Mode): Initialized.');
+    console.log('TypingMind GPT-Style Theme v4.2 (Native Dark): Initialized.');
   }
 
   // --- Start the theme ---
